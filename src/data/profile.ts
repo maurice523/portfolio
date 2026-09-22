@@ -16,9 +16,8 @@ export const profile = {
   // While it is empty, your initials are shown instead.
   photo: '',
   links: {
-    // TODO: add your profile URLs
-    github: '',
-    linkedin: '',
+    github: 'https://github.com/maurice523',
+    linkedin: 'https://www.linkedin.com/in/maurice-neme-020582317',
     resume: '/resume.pdf',
   },
   about: [

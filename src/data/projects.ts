@@ -35,7 +35,7 @@ export const projects: Project[] = [
     image: '/projects/gemline-test-data-generator.svg',
     imageAlt: 'ERP Test Data Generator project preview',
     tools: ['Python', 'BAML', 'OpenAI API', 'React.js'],
-    links: {},
+    links: { live: 'https://orders.mauriceneme.com' },
     date: 'Jun 2026 – Aug 2026',
     status: 'completed',
     featured: true,
