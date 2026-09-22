@@ -13,6 +13,22 @@
 
   --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  @keyframes orbit {
+    from {
+      transform: rotate(var(--angle)) translateY(var(--radius)) rotate(calc(var(--angle) * -1));
+    }
+    to {
+      transform: rotate(calc(var(--angle) + 360deg)) translateY(var(--radius))
+        rotate(calc(var(--angle) * -1 - 360deg));
+    }
+  }
+}
+
+/* Orbiting logos in the About section (see OrbitingCircles.tsx). "inline" so var(--duration)
+   is read from each logo, not from :root where it isn't defined. */
+@theme inline {
+  --animate-orbit: orbit var(--duration) linear infinite;
 }
 
 @layer base {

@@ -1,7 +1,11 @@
+import { lazy, Suspense } from 'react'
 import { profile } from '@/data/profile'
 import { Container } from './Container'
+import { ErrorBoundary } from './ErrorBoundary'
 import { GitHubIcon, LinkedInIcon, MailIcon } from './icons'
-import { Portrait } from './Portrait'
+
+// three.js is large, so the 3D bass loads separately; the text renders right away.
+const BassScene = lazy(() => import('./BassScene'))
 
 const iconLink =
   'grid size-11 place-items-center rounded-lg border border-line text-muted hover:border-muted hover:text-fg'
@@ -9,20 +13,24 @@ const iconLink =
 export function Hero() {
   return (
     <Container>
-      <div className="max-w-3xl pt-10 pb-2 md:pt-16">
-        <p className="font-mono text-sm text-muted">
-          <span className="text-accent">~/boston $</span> whoami
-          <span
-            aria-hidden="true"
-            className="ml-1 inline-block h-4 w-2 translate-y-0.5 animate-pulse bg-accent motion-reduce:animate-none"
-          />
-        </p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">{profile.name}</h1>
-        <p className="mt-2 text-base text-balance text-muted md:text-lg">{profile.headline}</p>
+      <div className="grid items-center gap-4 pt-10 md:pt-14 lg:min-h-[calc(100dvh-3.5rem)] lg:grid-cols-2 lg:gap-8 lg:pt-0">
+        <div className="max-w-xl">
+          <p className="text-sm font-medium text-accent">Software developer · Boston, MA</p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">
+            Hi, I’m Maurice.
+          </h1>
+          <p className="mt-4 text-lg text-balance text-muted md:text-xl">
+            I build software that turns data into tools people actually use. When I’m not coding,
+            I’m playing and teaching bass.
+          </p>
 
-        <div className="mt-6 flex flex-wrap items-end gap-5">
-          <Portrait />
-          <div className="flex gap-2">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <a
+              href="#projects"
+              className="inline-flex min-h-11 items-center rounded-lg bg-accent px-5 font-medium text-bg hover:bg-accent/90"
+            >
+              See my projects
+            </a>
             <a href={`mailto:${profile.email}`} aria-label="Email me" className={iconLink}>
               <MailIcon />
             </a>
@@ -49,6 +57,19 @@ export function Hero() {
               </a>
             )}
           </div>
+        </div>
+
+        {/* 3D bass with a soft stage-light glow behind it */}
+        <div className="relative h-80 min-w-0 sm:h-96 lg:h-[34rem]">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 rounded-full bg-[radial-gradient(closest-side,rgb(127_216_174/0.16),transparent)]"
+          />
+          <ErrorBoundary>
+            <Suspense fallback={null}>
+              <BassScene />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </div>
     </Container>

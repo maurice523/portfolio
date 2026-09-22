@@ -16,6 +16,28 @@ export function Footer() {
             {profile.email}
           </a>
         </div>
+        {/* Required credit for the CC BY 3.0 model; Devicon logos are MIT */}
+        <p className="mt-2 text-[0.8rem] text-muted/80">
+          3D bass model: “Bass Guitar” by{' '}
+          <a
+            href="https://poly.pizza/m/ByBoHTCdYZ"
+            target="_blank"
+            rel="noreferrer"
+            className="underline hover:text-fg"
+          >
+            Zsky
+          </a>
+          , licensed under{' '}
+          <a
+            href="https://creativecommons.org/licenses/by/3.0/"
+            target="_blank"
+            rel="noreferrer"
+            className="underline hover:text-fg"
+          >
+            CC BY 3.0
+          </a>
+          . Tech logos from Devicon.
+        </p>
       </Container>
     </footer>
   )
