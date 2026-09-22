@@ -47,12 +47,12 @@ export default function BassScene() {
     const camera = new PerspectiveCamera(32, 1, 0.1, 100)
     camera.position.set(0, 0, 6)
 
-    // Lighting: soft fill, a warm key light and a mint rim light that matches the site accent
+    // Lighting: soft fill, a warm key light and an orange rim light that matches the site accent
     scene.add(new HemisphereLight(0xffffff, 0x1a1f2b, 1.4))
     const key = new DirectionalLight(0xfff1dc, 3)
     key.position.set(3, 4, 5)
     scene.add(key)
-    const rim = new DirectionalLight(new Color('#7fd8ae'), 4)
+    const rim = new DirectionalLight(new Color('#ff6a1f'), 4)
     rim.position.set(-4, 2, -3)
     scene.add(rim)
 

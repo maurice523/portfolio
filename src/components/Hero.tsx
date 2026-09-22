@@ -20,8 +20,7 @@ export function Hero() {
             Hi, I’m Maurice.
           </h1>
           <p className="mt-4 text-lg text-balance text-muted md:text-xl">
-            I build software that turns data into tools people actually use. When I’m not coding,
-            I’m playing and teaching bass.
+            I build software that turns data into tools people actually use. I'm also a pretty funky bass player.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -63,7 +62,7 @@ export function Hero() {
         <div className="relative h-80 min-w-0 sm:h-96 lg:h-[34rem]">
           <div
             aria-hidden="true"
-            className="absolute inset-0 rounded-full bg-[radial-gradient(closest-side,rgb(127_216_174/0.16),transparent)]"
+            className="absolute inset-0 rounded-full bg-[radial-gradient(closest-side,rgb(255_106_31/0.16),transparent)]"
           />
           <ErrorBoundary>
             <Suspense fallback={null}>

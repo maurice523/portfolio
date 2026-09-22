@@ -7,9 +7,9 @@ import { Section } from './Section'
 
 const chips: { text: string; color: string; style: CSSProperties }[] = [
   { text: 'Skiing', color: '#6cb4ff', style: { top: '8%', left: '6%', rotate: '-8deg' } },
-  { text: 'Wakeboarding', color: '#5ee0f0', style: { top: '14%', left: '58%', rotate: '10deg' } },
-  { text: 'Climbing', color: '#ff9b5e', style: { top: '30%', left: '20%', rotate: '4deg' } },
-  { text: 'Bass', color: '#7fd8ae', style: { top: '46%', left: '62%', rotate: '-14deg' } },
+  { text: 'Wakeboarding', color: '#5ee0f0', style: { top: '14%', left: '48%', rotate: '10deg' } },
+  { text: 'Climbing', color: '#b5e35d', style: { top: '30%', left: '20%', rotate: '4deg' } },
+  { text: 'Bass', color: '#ff6a1f', style: { top: '46%', left: '62%', rotate: '-14deg' } },
   { text: 'Soccer', color: '#f2c46d', style: { top: '52%', left: '8%', rotate: '12deg' } },
   { text: 'Cars', color: '#c79bff', style: { top: '66%', left: '38%', rotate: '-5deg' } },
   { text: 'Ecuador', color: '#7aa2ff', style: { top: '80%', left: '4%', rotate: '6deg' } },

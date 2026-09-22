@@ -4,15 +4,15 @@
       <circle cx="2" cy="2" r="1.5" fill="#273142"/>
     </pattern>
     <radialGradient id="glow" cx="30%" cy="40%" r="70%">
-      <stop offset="0" stop-color="#7fd8ae" stop-opacity="0.14"/>
-      <stop offset="1" stop-color="#7fd8ae" stop-opacity="0"/>
+      <stop offset="0" stop-color="#ff6a1f" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#ff6a1f" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <rect width="1200" height="675" fill="#0f131a"/>
   <rect width="1200" height="675" fill="url(#g)"/>
   <rect width="1200" height="675" fill="url(#glow)"/>
   <g font-family="IBM Plex Mono, ui-monospace, monospace">
-    <text x="120" y="330" font-size="46" font-weight="700" fill="#e9edf3"><tspan fill="#7fd8ae">$ </tspan>boston-trees<tspan fill="#7fd8ae">_</tspan></text>
+    <text x="120" y="330" font-size="46" font-weight="700" fill="#e9edf3"><tspan fill="#ff6a1f">$ </tspan>boston-trees<tspan fill="#ff6a1f">_</tspan></text>
     <text x="120" y="385" font-size="28" fill="#aab4c3">mapping the urban forest</text>
   </g>
 </svg>

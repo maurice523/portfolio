@@ -15,7 +15,7 @@ export const projects: Project[] = [
     ],
     image: '/projects/move.svg',
     imageAlt: 'Move project preview',
-    tools: ['React Native', 'React.js', 'TypeScript', 'FastAPI', 'Supabase', 'Vercel'],
+    tools: ['React Native', 'React.js', 'TypeScript', 'FastAPI', 'Supabase', 'Cloudflare'],
     links: {},
     date: 'Aug 2026 – Present',
     status: 'in-development',
@@ -75,7 +75,7 @@ export const projects: Project[] = [
   {
     slug: 'portfolio',
     title: 'This Portfolio',
-    tagline: 'The site you’re on: a portfolio built to grow, designed for phone and desktop.',
+    tagline: 'The site you’re on! A portfolio built to grow, designed for web and mobile.',
     description:
       'My personal portfolio for introductions and project display. Projects are data-driven, so adding a new one means adding a single entry. It is responsive from phone to desktop and deployed on Cloudflare.',
     highlights: [
