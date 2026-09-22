@@ -15,12 +15,15 @@ export function Hero() {
     <Container>
       <div className="grid items-center gap-4 pt-10 md:pt-14 lg:min-h-[calc(100dvh-3.5rem)] lg:grid-cols-2 lg:gap-8 lg:pt-0">
         <div className="max-w-xl">
-          <p className="text-sm font-medium text-accent">Software developer · Boston, MA</p>
+          <p className="text-sm font-medium text-accent">
+            Aspiring Software developer & Data Analyst · Boston, MA
+          </p>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">
             Hi, I’m Maurice.
           </h1>
           <p className="mt-4 text-lg text-balance text-muted md:text-xl">
-            I build software that turns data into tools people actually use. I'm also a pretty funky bass player.
+            I build software that turns data into tools people actually use. I'm also a pretty funky
+            bass player.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
