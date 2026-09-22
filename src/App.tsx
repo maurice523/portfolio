@@ -1,8 +1,19 @@
+import { Route, Routes } from 'react-router'
+import { Layout } from '@/components/Layout'
 import { HomePage } from '@/pages/HomePage'
+import { NotFoundPage } from '@/pages/NotFoundPage'
+import { ProjectPage } from '@/pages/ProjectPage'
 
-// Routes (home, project page, 404) are added in the routing phase.
 function App() {
-  return <HomePage />
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="projects/:slug" element={<ProjectPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
+  )
 }
 
 export default App

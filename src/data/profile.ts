@@ -12,6 +12,9 @@ export const profile = {
   headline: 'Software Developer · Data Analytics & CIS @ Bentley',
   location: 'Boston, MA',
   email: 'mauricenemee@gmail.com',
+  // Put your photo in public/ (e.g. public/maurice.jpg) and set this to '/maurice.jpg'.
+  // While it is empty, your initials are shown instead.
+  photo: '',
   links: {
     // TODO: add your profile URLs
     github: '',

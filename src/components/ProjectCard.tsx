@@ -10,7 +10,7 @@ export function ProjectCard({ project }: { project: Project }) {
   const { slug, title, tagline, image, imageAlt, tools, links, date, status } = project
 
   return (
-    <article className="group border-line bg-surface hover:border-accent/50 relative flex h-full flex-col overflow-hidden rounded-xl border transition duration-200 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface transition duration-200 hover:-translate-y-0.5 hover:border-accent/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
       <img
         src={image}
         alt={imageAlt}
@@ -22,7 +22,7 @@ export function ProjectCard({ project }: { project: Project }) {
       <div className="flex flex-1 flex-col gap-4 p-5 md:p-6">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
           <StatusBadge status={status} />
-          <span className="text-muted font-mono text-sm tabular-nums">{date}</span>
+          <span className="font-mono text-sm text-muted tabular-nums">{date}</span>
         </div>
 
         <div>
@@ -30,12 +30,12 @@ export function ProjectCard({ project }: { project: Project }) {
             {/* The ::after makes this link cover the whole card */}
             <Link
               to={`/projects/${slug}`}
-              className="group-hover:text-accent focus-visible:after:outline-accent after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-xl focus-visible:after:outline-2"
+              className="group-hover:text-accent after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-xl focus-visible:after:outline-2 focus-visible:after:outline-accent"
             >
               {title}
             </Link>
           </h3>
-          <p className="text-muted mt-2">{tagline}</p>
+          <p className="mt-2 text-muted">{tagline}</p>
         </div>
 
         <ul className="flex flex-wrap gap-2" aria-label="Tools used">
@@ -44,8 +44,8 @@ export function ProjectCard({ project }: { project: Project }) {
           ))}
         </ul>
 
-        <div className="border-line mt-auto flex items-center justify-between border-t pt-4">
-          <span className="text-accent font-medium" aria-hidden="true">
+        <div className="mt-auto flex items-center justify-between border-t border-line pt-4">
+          <span className="font-medium text-accent" aria-hidden="true">
             View details →
           </span>
           <div className="relative z-10 -my-2 flex gap-1">
@@ -55,7 +55,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`${title} on GitHub`}
-                className="text-muted hover:text-fg grid size-11 place-items-center rounded-md"
+                className="grid size-11 place-items-center rounded-md text-muted hover:text-fg"
               >
                 <GitHubIcon />
               </a>
@@ -66,7 +66,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`${title} live site`}
-                className="text-muted hover:text-fg grid size-11 place-items-center rounded-md"
+                className="grid size-11 place-items-center rounded-md text-muted hover:text-fg"
               >
                 <ExternalLinkIcon />
               </a>
