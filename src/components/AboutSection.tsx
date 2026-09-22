@@ -5,36 +5,24 @@ import { profile } from '@/data/profile'
 import { OrbitingCircles } from './OrbitingCircles'
 import { Section } from './Section'
 
-// Things visitors can drag around in the "playground" tile. Positions are percentages.
-const chips: { text: string; style: CSSProperties; highlight?: boolean }[] = [
-  { text: 'Python', style: { top: '8%', left: '6%', rotate: '-8deg' } },
-  { text: 'React', style: { top: '14%', left: '58%', rotate: '10deg' } },
-  {
-    text: '1st place · Data Viz',
-    style: { top: '30%', left: '18%', rotate: '4deg' },
-    highlight: true,
-  },
-  { text: 'Bass', style: { top: '46%', left: '62%', rotate: '-14deg' }, highlight: true },
-  { text: 'SQL', style: { top: '52%', left: '8%', rotate: '12deg' } },
-  { text: '29+ students taught', style: { top: '66%', left: '30%', rotate: '-5deg' } },
-  { text: 'TypeScript', style: { top: '80%', left: '4%', rotate: '6deg' } },
-  { text: 'Boston', style: { top: '82%', left: '62%', rotate: '-9deg' } },
+const chips: { text: string; color: string; style: CSSProperties }[] = [
+  { text: 'Skiing', color: '#6cb4ff', style: { top: '8%', left: '6%', rotate: '-8deg' } },
+  { text: 'Wakeboarding', color: '#5ee0f0', style: { top: '14%', left: '58%', rotate: '10deg' } },
+  { text: 'Climbing', color: '#ff9b5e', style: { top: '30%', left: '20%', rotate: '4deg' } },
+  { text: 'Bass', color: '#7fd8ae', style: { top: '46%', left: '62%', rotate: '-14deg' } },
+  { text: 'Soccer', color: '#f2c46d', style: { top: '52%', left: '8%', rotate: '12deg' } },
+  { text: 'Cars', color: '#c79bff', style: { top: '66%', left: '38%', rotate: '-5deg' } },
+  { text: 'Ecuador', color: '#7aa2ff', style: { top: '80%', left: '4%', rotate: '6deg' } },
+  { text: 'Boston', color: '#34f33e', style: { top: '82%', left: '62%', rotate: '-9deg' } },
 ]
 
-// Tech logos (from Devicon, MIT) orbiting in two rings
 const innerRing = ['python', 'typescript', 'react', 'java', 'postgresql'].map((name) => ({
   name,
   src: `/logos/${name}.svg`,
 }))
-const outerRing = [
-  'javascript',
-  'nodejs',
-  'fastapi',
-  'supabase',
-  'git',
-  'tailwindcss',
-  'jupyter',
-].map((name) => ({ name, src: `/logos/${name}.svg` }))
+const outerRing = ['javascript', 'fastapi', 'supabase', 'git', 'tailwindcss', 'jupyter'].map(
+  (name) => ({ name, src: `/logos/${name}.svg` }),
+)
 
 const tile = 'relative overflow-hidden rounded-2xl border border-line bg-surface p-5 md:p-6'
 
@@ -54,7 +42,7 @@ export function AboutSection() {
               className="size-20 shrink-0 rounded-full border-2 border-line object-cover"
             />
             <div className="flex flex-col gap-3 text-muted">
-              <p className="text-lg font-semibold text-fg">Hi, I’m {profile.name}</p>
+              <p className="text-lg font-semibold text-fg">{profile.name}</p>
               {about.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -86,12 +74,14 @@ export function AboutSection() {
                 dragElastic={0.4}
                 whileHover={{ scale: 1.05 }}
                 whileDrag={{ scale: 1.1, zIndex: 10 }}
-                style={chip.style}
-                className={`absolute cursor-grab rounded-full border px-4 py-2 text-sm font-medium whitespace-nowrap shadow-lg select-none active:cursor-grabbing ${
-                  chip.highlight
-                    ? 'border-accent/40 bg-accent/15 text-accent'
-                    : 'border-line bg-raised text-fg'
-                }`}
+                style={{
+                  ...chip.style,
+                  color: chip.color,
+                  borderColor: `color-mix(in srgb, ${chip.color} 45%, transparent)`,
+                  // Tinted but opaque, so the faded text behind doesn't show through
+                  backgroundColor: `color-mix(in srgb, ${chip.color} 16%, var(--color-surface))`,
+                }}
+                className="absolute cursor-grab rounded-full border px-4 py-2 text-sm font-medium whitespace-nowrap shadow-lg select-none active:cursor-grabbing"
               >
                 {chip.text}
               </motion.div>

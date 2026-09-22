@@ -43,6 +43,7 @@ export const profile = {
       date: 'Jun 2026 – Aug 2026',
       bullets: [
         'Built an AI-powered ERP test data generator using Python, BAML, the OpenAI API and React.js',
+        'Integrated into company production ERP system',
         'Implemented a data pipeline that generated output based on statistical analysis',
         'Cut order entry from 12 orders per hour to 1,000+ orders in minutes',
         'Presented the product to Gemline’s Executive Leadership Team and Board Chair',
@@ -70,16 +71,9 @@ export const profile = {
   ] satisfies Experience[],
   skills: {
     Programming: ['Python', 'TypeScript', 'Java', 'SQL', 'HTML/CSS'],
-    Frameworks: [
-      'React.js',
-      'React Native',
-      'Node.js / Express',
-      'Nest.js',
-      'FastAPI',
-      'Streamlit',
-    ],
+    Frameworks: ['React.js', 'React Native', 'FastAPI', 'Streamlit'],
     Data: ['Pandas', 'NumPy', 'Matplotlib', 'Statistical Modeling', 'Data Visualization'],
-    Tools: ['GitHub', 'VS Code', 'Claude Code', 'Supabase', 'Vercel'],
+    Tools: ['GitHub', 'VS Code', 'Claude Code', 'Supabase', 'Cloudflare'],
     Concepts: ['REST APIs', 'AI/LLM Integration', 'Data Structures & Algorithms'],
   },
   languages: ['English (Fluent)', 'Spanish (Native)'],
