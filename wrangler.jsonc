@@ -1,0 +1,11 @@
+// Cloudflare deploy config (used in the deploy phase).
+// "single-page-application" makes /projects/<slug> work on refresh or direct visits.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mauriceneme",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application",
+  },
+}

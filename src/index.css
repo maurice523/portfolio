@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+
+/* Design tokens: each one becomes Tailwind classes, e.g. bg-surface, text-accent, border-line, font-mono */
+@theme {
+  --color-bg: #0b0f14;
+  --color-surface: #121821;
+  --color-line: #1f2a37;
+  --color-fg: #e6edf3;
+  --color-muted: #8b98a5;
+  --color-accent: #3ddc84;
+  --color-amber: #f5b94a;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+  }
+
+  ::selection {
+    @apply bg-accent text-bg;
+  }
+
+  :focus-visible {
+    @apply outline-accent outline-2 outline-offset-2;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
