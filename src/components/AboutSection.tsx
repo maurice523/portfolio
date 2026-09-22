@@ -28,7 +28,7 @@ const tile = 'relative overflow-hidden rounded-2xl border border-line bg-surface
 
 export function AboutSection() {
   const playground = useRef<HTMLDivElement>(null)
-  const { about, education, languages } = profile
+  const { about, education } = profile
 
   return (
     <Section id="about" title="About me" intro="A bit about who I am and what I work with.">
@@ -94,7 +94,6 @@ export function AboutSection() {
           <p className="text-sm font-medium text-muted">Education</p>
           <p className="mt-2 text-lg font-semibold">{education.school}</p>
           <p className="mt-1 text-sm text-muted">{education.degree}</p>
-          <p className="mt-1 font-mono text-sm text-muted">{education.date}</p>
           <ul className="mt-3 flex flex-col gap-1 text-sm">
             {education.details.map((detail) => (
               <li key={detail}>{detail}</li>
@@ -117,7 +116,7 @@ export function AboutSection() {
               A ridesharing app for students, which I’m co-founding. See the project →
             </p>
           </div>
-          <p className="text-sm text-muted">Speaks {languages.join(' · ')}</p>
+          <p></p>
         </Link>
 
         {/* Tech stack with orbiting logos */}
@@ -125,8 +124,8 @@ export function AboutSection() {
           <div className="max-w-sm">
             <p className="text-lg font-semibold">Tech stack</p>
             <p className="mt-2 text-muted">
-              The languages and tools I reach for most, from data work in Python to full-stack apps
-              in TypeScript and React.
+              The languages and tools I reach for most, from data work in Python and SQL to web apps
+              in React.
             </p>
           </div>
           <div className="relative mx-auto aspect-square w-full max-w-[20rem] max-sm:scale-[0.8]">
