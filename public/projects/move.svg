@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+  <defs>
+    <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#273142"/>
+    </pattern>
+    <radialGradient id="glow" cx="30%" cy="40%" r="70%">
+      <stop offset="0" stop-color="#7fd8ae" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#7fd8ae" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="675" fill="#0f131a"/>
+  <rect width="1200" height="675" fill="url(#g)"/>
+  <rect width="1200" height="675" fill="url(#glow)"/>
+  <g font-family="IBM Plex Mono, ui-monospace, monospace">
+    <text x="120" y="320" font-size="64" font-weight="700" fill="#e9edf3"><tspan fill="#7fd8ae">$ </tspan>move<tspan fill="#7fd8ae">_</tspan></text>
+    <text x="120" y="400" font-size="40" fill="#aab4c3">rides, but for students</text>
+  </g>
+</svg>
