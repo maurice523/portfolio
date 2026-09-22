@@ -20,8 +20,8 @@ export function HomePage() {
               className="ml-1 inline-block h-4 w-2 translate-y-0.5 animate-pulse bg-accent motion-reduce:animate-none"
             />
           </p>
-          <h1 className="mt-4 text-5xl font-semibold tracking-tight md:text-7xl">{profile.name}</h1>
-          <p className="mt-5 text-xl text-muted md:text-2xl">{profile.headline}</p>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-5xl">{profile.name}</h1>
+          <p className="mt-3 text-lg text-balance text-muted md:text-xl">{profile.headline}</p>
           <div className="mt-10">
             <Portrait />
           </div>

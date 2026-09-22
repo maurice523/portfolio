@@ -14,7 +14,7 @@ export const profile = {
   email: 'mauricenemee@gmail.com',
   // Put your photo in public/ (e.g. public/maurice.jpg) and set this to '/maurice.jpg'.
   // While it is empty, your initials are shown instead.
-  photo: '',
+  photo: '/maurice.jpg',
   links: {
     github: 'https://github.com/maurice523',
     linkedin: 'https://www.linkedin.com/in/maurice-neme-020582317',

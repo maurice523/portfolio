@@ -8,7 +8,7 @@ export function Portrait() {
     .join('')
 
   return (
-    <div className="size-36 overflow-hidden rounded-2xl border border-line bg-surface md:size-44">
+    <div className="size-32 overflow-hidden rounded-full border-2 border-line bg-surface md:size-40">
       {profile.photo ? (
         <img
           src={profile.photo}

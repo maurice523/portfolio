@@ -23,11 +23,14 @@ export function ProjectPage() {
 
       <Container>
         <article className="py-10 md:py-16">
-          <Link to="/#projects" className="text-sm font-medium text-muted hover:text-fg">
+          <Link
+            to="/#projects"
+            className="-ml-1 inline-flex min-h-11 items-center px-1 text-sm font-medium text-muted hover:text-fg"
+          >
             ← All projects
           </Link>
 
-          <header className="mt-8 max-w-3xl">
+          <header className="mt-4 max-w-3xl">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
               <StatusBadge status={status} />
               <span className="font-mono text-sm text-muted tabular-nums">{date}</span>
