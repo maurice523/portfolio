@@ -21,6 +21,14 @@
     scroll-behavior: smooth;
   }
 
+  /* Slightly smaller overall scale on tablets and desktops. Everything in Tailwind is sized in rem,
+     so this one value shrinks text, spacing, images and cards together. Phones keep 16px. */
+  @media (min-width: 768px) {
+    html {
+      font-size: 15px;
+    }
+  }
+
   body {
     @apply bg-bg font-sans text-base/relaxed text-fg antialiased;
   }

@@ -22,7 +22,7 @@ export function ProjectPage() {
       <meta name="description" content={tagline} />
 
       <Container>
-        <article className="py-10 md:py-16">
+        <article className="py-6 md:py-10">
           <Link
             to="/#projects"
             className="-ml-1 inline-flex min-h-11 items-center px-1 text-sm font-medium text-muted hover:text-fg"
@@ -35,8 +35,8 @@ export function ProjectPage() {
               <StatusBadge status={status} />
               <span className="font-mono text-sm text-muted tabular-nums">{date}</span>
             </div>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">{title}</h1>
-            <p className="mt-4 text-xl text-muted">{tagline}</p>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">{title}</h1>
+            <p className="mt-3 text-lg text-muted">{tagline}</p>
 
             {(links.github || links.live) && (
               <div className="mt-6 flex flex-wrap gap-3">
@@ -64,26 +64,25 @@ export function ProjectPage() {
             )}
           </header>
 
-          <img
-            src={image}
-            alt={imageAlt}
-            className="mt-10 aspect-video w-full max-w-full rounded-xl border border-line object-cover"
-          />
-
-          <div className="mt-10 grid gap-10 lg:grid-cols-3 lg:gap-16">
-            <div className="max-w-prose lg:col-span-2">
-              <h2 className="text-2xl font-semibold tracking-tight">About the project</h2>
-              <p className="mt-4 text-lg text-muted">{description}</p>
+          <div className="mt-8 grid gap-8 lg:grid-cols-3 lg:gap-12">
+            <div className="lg:col-span-2">
+              <img
+                src={image}
+                alt={imageAlt}
+                className="aspect-[2/1] w-full max-w-full rounded-xl border border-line object-cover"
+              />
+              <h2 className="mt-8 text-xl font-semibold tracking-tight">About the project</h2>
+              <p className="mt-3 text-muted">{description}</p>
 
               {highlights && highlights.length > 0 && (
                 <>
-                  <h2 className="mt-10 text-2xl font-semibold tracking-tight">Highlights</h2>
+                  <h2 className="mt-8 text-xl font-semibold tracking-tight">Highlights</h2>
                   <ul className="mt-4 flex flex-col gap-3">
                     {highlights.map((highlight) => (
-                      <li key={highlight} className="flex gap-3 text-lg text-muted">
+                      <li key={highlight} className="flex gap-3 text-muted">
                         <span
                           aria-hidden="true"
-                          className="mt-3 size-1.5 shrink-0 rounded-full bg-accent"
+                          className="mt-2.5 size-1.5 shrink-0 rounded-full bg-accent"
                         />
                         {highlight}
                       </li>

@@ -1,32 +1,18 @@
-import { Container } from '@/components/Container'
-import { Portrait } from '@/components/Portrait'
+import { AboutSection } from '@/components/AboutSection'
+import { ContactSection } from '@/components/ContactSection'
+import { ExperienceSection } from '@/components/ExperienceSection'
+import { Hero } from '@/components/Hero'
 import { ProjectGrid } from '@/components/ProjectGrid'
 import { Section } from '@/components/Section'
+import { SkillsSection } from '@/components/SkillsSection'
 import { getProjects } from '@/data/projects'
-import { profile } from '@/data/profile'
 
 export function HomePage() {
   const projects = getProjects()
 
   return (
     <main>
-      {/* Temporary intro; the full Hero comes in a later phase */}
-      <Container>
-        <div className="max-w-3xl pt-16 pb-4 md:pt-24">
-          <p className="font-mono text-sm text-muted">
-            <span className="text-accent">~/boston $</span> whoami
-            <span
-              aria-hidden="true"
-              className="ml-1 inline-block h-4 w-2 translate-y-0.5 animate-pulse bg-accent motion-reduce:animate-none"
-            />
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-5xl">{profile.name}</h1>
-          <p className="mt-3 text-lg text-balance text-muted md:text-xl">{profile.headline}</p>
-          <div className="mt-10">
-            <Portrait />
-          </div>
-        </div>
-      </Container>
+      <Hero />
 
       <Section
         id="projects"
@@ -36,6 +22,11 @@ export function HomePage() {
       >
         <ProjectGrid projects={projects} />
       </Section>
+
+      <AboutSection />
+      <ExperienceSection />
+      <SkillsSection />
+      <ContactSection />
     </main>
   )
 }

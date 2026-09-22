@@ -18,7 +18,9 @@ export const profile = {
   links: {
     github: 'https://github.com/maurice523',
     linkedin: 'https://www.linkedin.com/in/maurice-neme-020582317',
-    resume: '/resume.pdf',
+    // Add public/resume.pdf (without your phone number) and set this to '/resume.pdf'
+    // to show a "Download resume" button in the Contact section.
+    resume: '',
   },
   about: [
     'I’m a Data Analytics and Computer Information Systems student at Bentley University who loves building software that turns data into something people can use.',
@@ -57,8 +59,8 @@ export const profile = {
       ],
     },
     {
-      company: 'Private Music Tutor',
-      role: 'Self-Employed',
+      company: 'Self-employed',
+      role: 'Private Music Tutor',
       date: 'Jul 2023 – Present',
       bullets: [
         'Taught 29+ beginner and intermediate students bass guitar and music theory',

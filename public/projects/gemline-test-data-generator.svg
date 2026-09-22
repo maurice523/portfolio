@@ -12,7 +12,7 @@
   <rect width="1200" height="675" fill="url(#g)"/>
   <rect width="1200" height="675" fill="url(#glow)"/>
   <g font-family="IBM Plex Mono, ui-monospace, monospace">
-    <text x="120" y="320" font-size="64" font-weight="700" fill="#e9edf3"><tspan fill="#7fd8ae">$ </tspan>generate --orders 1000<tspan fill="#7fd8ae">_</tspan></text>
-    <text x="120" y="400" font-size="40" fill="#aab4c3">ERP test data, powered by AI</text>
+    <text x="120" y="330" font-size="46" font-weight="700" fill="#e9edf3"><tspan fill="#7fd8ae">$ </tspan>generate --orders 1000<tspan fill="#7fd8ae">_</tspan></text>
+    <text x="120" y="385" font-size="28" fill="#aab4c3">ERP test data, powered by AI</text>
   </g>
 </svg>

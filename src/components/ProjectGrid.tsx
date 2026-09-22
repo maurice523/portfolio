@@ -7,7 +7,7 @@ import { ProjectCard } from './ProjectCard'
 // and the rest take a third (span 2), so 2 featured + 3 others fill two neat rows.
 export function ProjectGrid({ projects }: { projects: Project[] }) {
   return (
-    <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-6">
+    <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-6">
       {projects.map((project) => (
         <li
           key={project.slug}

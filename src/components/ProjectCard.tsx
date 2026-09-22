@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { Link } from 'react-router'
 import type { Project } from '@/types/project'
 import { ExternalLinkIcon, GitHubIcon } from './icons'
@@ -7,7 +8,7 @@ import { ToolChip } from './ToolChip'
 // One project in the grid. The whole card links to the project page;
 // the GitHub / live icons sit on top and open in a new tab.
 export function ProjectCard({ project }: { project: Project }) {
-  const { slug, title, tagline, image, imageAlt, tools, links, date, status } = project
+  const { slug, title, tagline, image, imageAlt, tools, links, date, status, featured } = project
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface transition duration-200 hover:-translate-y-0.5 hover:border-accent/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
@@ -16,17 +17,20 @@ export function ProjectCard({ project }: { project: Project }) {
         alt={imageAlt}
         loading="lazy"
         decoding="async"
-        className="aspect-video w-full max-w-full object-cover"
+        className={clsx(
+          'w-full max-w-full object-cover',
+          featured ? 'aspect-[2/1] lg:aspect-[5/2]' : 'aspect-[2/1]',
+        )}
       />
 
-      <div className="flex flex-1 flex-col gap-4 p-5 md:p-6">
+      <div className="flex flex-1 flex-col gap-3 p-4 md:p-5">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
           <StatusBadge status={status} />
           <span className="font-mono text-sm text-muted tabular-nums">{date}</span>
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             {/* The ::after makes this link cover the whole card */}
             <Link
               to={`/projects/${slug}`}
@@ -35,7 +39,7 @@ export function ProjectCard({ project }: { project: Project }) {
               {title}
             </Link>
           </h3>
-          <p className="mt-2 text-muted">{tagline}</p>
+          <p className="mt-1 text-[0.9375rem] text-muted">{tagline}</p>
         </div>
 
         <ul className="flex flex-wrap gap-2" aria-label="Tools used">
@@ -44,8 +48,8 @@ export function ProjectCard({ project }: { project: Project }) {
           ))}
         </ul>
 
-        <div className="mt-auto flex items-center justify-between border-t border-line pt-4">
-          <span className="font-medium text-accent" aria-hidden="true">
+        <div className="mt-auto flex items-center justify-between border-t border-line pt-3">
+          <span className="text-sm font-medium text-accent" aria-hidden="true">
             View details →
           </span>
           <div className="relative z-10 -my-2 flex gap-1">

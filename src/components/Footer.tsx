@@ -3,7 +3,7 @@ import { Container } from './Container'
 
 export function Footer() {
   return (
-    <footer className="mt-16 border-t border-line py-10 text-sm text-muted">
+    <footer className="mt-8 border-t border-line py-6 text-sm text-muted">
       <Container>
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <p className="text-balance">
