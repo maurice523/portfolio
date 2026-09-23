@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router'
 import { Container } from '@/components/Container'
 import { ExternalLinkIcon, GitHubIcon } from '@/components/icons'
+import { ProjectPreview } from '@/components/ProjectPreview'
 import { StatusBadge } from '@/components/StatusBadge'
 import { ToolChip } from '@/components/ToolChip'
 import { getProjectBySlug } from '@/data/projects'
@@ -13,8 +14,7 @@ export function ProjectPage() {
 
   if (!project) return <NotFoundPage />
 
-  const { title, tagline, description, highlights, image, imageAlt, tools, links, date, status } =
-    project
+  const { title, tagline, description, highlights, tools, links, date, status } = project
 
   return (
     <main>
@@ -66,10 +66,9 @@ export function ProjectPage() {
 
           <div className="mt-8 grid gap-8 lg:grid-cols-3 lg:gap-12">
             <div className="lg:col-span-2">
-              <img
-                src={image}
-                alt={imageAlt}
-                className="aspect-[2/1] w-full max-w-full rounded-xl border border-line object-cover"
+              <ProjectPreview
+                project={project}
+                className="aspect-[2/1] rounded-xl border border-line"
               />
               <h2 className="mt-8 text-xl font-semibold tracking-tight">About the project</h2>
               <p className="mt-3 text-muted">{description}</p>

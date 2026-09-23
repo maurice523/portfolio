@@ -1,26 +1,20 @@
-import clsx from 'clsx'
 import { Link } from 'react-router'
 import type { Project } from '@/types/project'
 import { ExternalLinkIcon, GitHubIcon } from './icons'
+import { ProjectPreview } from './ProjectPreview'
 import { StatusBadge } from './StatusBadge'
 import { ToolChip } from './ToolChip'
 
 // One project in the grid. The whole card links to the project page;
 // the GitHub / live icons sit on top and open in a new tab.
 export function ProjectCard({ project }: { project: Project }) {
-  const { slug, title, tagline, image, imageAlt, tools, links, date, status, featured } = project
+  const { slug, title, tagline, tools, links, date, status, featured } = project
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface transition duration-200 hover:-translate-y-0.5 hover:border-accent/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
-      <img
-        src={image}
-        alt={imageAlt}
-        loading="lazy"
-        decoding="async"
-        className={clsx(
-          'w-full max-w-full object-cover',
-          featured ? 'aspect-[2/1] lg:aspect-[5/2]' : 'aspect-[2/1]',
-        )}
+      <ProjectPreview
+        project={project}
+        className={featured ? 'aspect-[2/1] lg:aspect-[5/2]' : 'aspect-[2/1]'}
       />
 
       <div className="flex flex-1 flex-col gap-3 p-4 md:p-5">

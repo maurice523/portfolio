@@ -3,16 +3,48 @@
     <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse">
       <circle cx="2" cy="2" r="1.5" fill="#273142"/>
     </pattern>
-    <radialGradient id="glow" cx="30%" cy="40%" r="70%">
-      <stop offset="0" stop-color="#ff6a1f" stop-opacity="0.14"/>
+    <radialGradient id="glow" cx="72%" cy="30%" r="70%">
+      <stop offset="0" stop-color="#ff6a1f" stop-opacity="0.18"/>
       <stop offset="1" stop-color="#ff6a1f" stop-opacity="0"/>
     </radialGradient>
+    <style>
+      .dash { stroke-dasharray: 10 10; animation: march 1.6s linear infinite; }
+      @keyframes march { to { stroke-dashoffset: -40; } }
+      .pulse { animation: pulse 2.2s ease-in-out infinite; transform-origin: center; }
+      @keyframes pulse {
+        0%, 100% { opacity: 0.55; r: 14; }
+        50% { opacity: 0; r: 26; }
+      }
+    </style>
   </defs>
+
   <rect width="1200" height="675" fill="#0f131a"/>
   <rect width="1200" height="675" fill="url(#g)"/>
   <rect width="1200" height="675" fill="url(#glow)"/>
+
+  <!-- route: dashed path from a pickup pin to a dropoff pin -->
+  <path d="M 140 520 C 320 460, 360 300, 560 280 S 860 200, 1040 150"
+        fill="none" stroke="#ff6a1f" stroke-opacity="0.55" stroke-width="3" stroke-linecap="round" class="dash"/>
+
+  <!-- start pin -->
+  <circle cx="140" cy="520" r="14" fill="none" stroke="#ff6a1f" stroke-width="2" class="pulse"/>
+  <circle cx="140" cy="520" r="7" fill="#ff6a1f"/>
+
+  <!-- end pin -->
+  <g transform="translate(1040 150)">
+    <path d="M0 -22 C 12 -22 20 -13 20 -2 C 20 14 0 28 0 28 C 0 28 -20 14 -20 -2 C -20 -13 -12 -22 0 -22 Z"
+          fill="#ff6a1f"/>
+    <circle cx="0" cy="-2" r="7" fill="#0f131a"/>
+  </g>
+
   <g font-family="IBM Plex Mono, ui-monospace, monospace">
-    <text x="120" y="330" font-size="46" font-weight="700" fill="#e9edf3"><tspan fill="#ff6a1f">$ </tspan>move<tspan fill="#ff6a1f">_</tspan></text>
-    <text x="120" y="385" font-size="28" fill="#aab4c3">rides, but for students</text>
+    <text x="120" y="200" font-size="46" font-weight="700" fill="#e9edf3"><tspan fill="#ff6a1f">$ </tspan>move<tspan fill="#ff6a1f">_</tspan></text>
+    <text x="120" y="252" font-size="28" fill="#aab4c3">rides, but for students</text>
+  </g>
+
+  <g transform="translate(640 470) rotate(-6)">
+    <rect x="-210" y="-46" width="420" height="92" rx="10" fill="none" stroke="#ff6a1f" stroke-width="3" stroke-dasharray="9 7"/>
+    <text x="0" y="14" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="40" font-weight="700"
+          fill="#ff6a1f" text-anchor="middle" letter-spacing="6">COMING SOON</text>
   </g>
 </svg>
