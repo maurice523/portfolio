@@ -67,14 +67,22 @@ export const projects: Project[] = [
     slug: 'excel-io',
     title: 'Excel-io',
     tagline:
-      'A working spreadsheet application in Java, with a formula bar and built-in functions.',
+      'A spreadsheet built from scratch in Java, with its own formula language. Playable in your browser.',
     description:
-      'A fully functioning spreadsheet application written in Java. It features a formula bar and built-in functions.',
-    highlights: ['Formula bar for entering and editing formulas', 'Built-in spreadsheet functions'],
+      'A desktop spreadsheet written in Java: a grid you type into, a formula bar, and formulas that reference other cells and ranges. The formula language is hand-written — a lexer turns the text into tokens, a parser builds a tree that respects operator precedence, and an evaluator walks it. The browser demo runs the real app with CheerpJ.',
+    highlights: [
+      'Hand-written lexer, parser and evaluator — no spreadsheet libraries',
+      '12 functions including SUM, AVG, IF, ROUND and CONCAT',
+      'Changing a cell recalculates everything that depends on it',
+      'Swing interface with a formula bar, plus save and open',
+    ],
     image: '/projects/excel-io.svg',
     imageAlt: 'Excel-io project preview',
-    tools: ['Java'],
-    links: {},
+    tools: ['Java', 'Swing', 'JUnit', 'Gradle'],
+    links: {
+      github: 'https://github.com/maurice523/excel-io',
+      live: 'https://excelio.mauriceneme.com',
+    },
     date: 'Nov 2025',
     status: 'completed',
   },
