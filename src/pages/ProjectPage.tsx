@@ -71,7 +71,11 @@ export function ProjectPage() {
                 className="aspect-[2/1] rounded-xl border border-line"
               />
               <h2 className="mt-8 text-xl font-semibold tracking-tight">About the project</h2>
-              <p className="mt-3 text-muted">{description}</p>
+              {description.split('\n\n').map((paragraph) => (
+                <p key={paragraph} className="mt-3 text-muted">
+                  {paragraph}
+                </p>
+              ))}
 
               {highlights && highlights.length > 0 && (
                 <>

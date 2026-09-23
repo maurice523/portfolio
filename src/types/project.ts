@@ -6,7 +6,7 @@ export type Project = {
   title: string
   /** One line shown on the card. */
   tagline: string
-  /** Longer text shown on the project page. */
+  /** Longer text shown on the project page. Separate paragraphs with a blank line (\n\n). */
   description: string
   /** Bullet points shown on the project page. */
   highlights?: string[]
