@@ -14,7 +14,7 @@ export function StatusBadge({ status }: { status: ProjectStatus }) {
         'inline-flex items-center gap-2 text-sm font-medium',
         status === 'live' && 'text-accent',
         status === 'in-development' && 'text-amber',
-        status === 'completed' && 'text-muted',
+        status === 'completed' && 'text-green',
       )}
     >
       <span
