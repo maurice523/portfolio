@@ -40,7 +40,7 @@ export const projects: Project[] = [
     imageAlt: 'Screenshot of the ERP Test Data Generator showing generated sales orders',
     tools: ['Python', 'BAML', 'OpenAI API', 'React.js'],
     links: {
-      github: 'https://github.com/maurice523/order-tester-gem',
+      github: 'https://github.com/maurice523/erp-test-data-generator',
       live: 'https://orders.mauriceneme.com',
     },
     date: 'Jun 2026 – Aug 2026',
@@ -104,7 +104,7 @@ export const projects: Project[] = [
     imageAlt: 'Screenshot of this portfolio’s hero section with the 3D bass guitar',
     tools: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Cloudflare'],
     links: {
-      github: 'https://github.com/maurice523/personal-portfolio',
+      github: 'https://github.com/maurice523/portfolio',
       live: 'https://mauriceneme.com',
     },
     date: 'Jul 2026 – Present',
