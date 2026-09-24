@@ -2,9 +2,9 @@ import clsx from 'clsx'
 import type { Project } from '@/types/project'
 
 // The image at the top of a card / project page.
-// Projects with a live site show their screenshot in a browser window (with the real
-// domain in the address bar) that rises from the bottom edge of a dot-grid backdrop,
-// so the cut-off reads as intentional. Projects without one show their image full-bleed.
+// Screenshots sit in a browser window that rises from the bottom edge of a dot-grid
+// backdrop, so the cut-off reads as intentional; if the project has a live site, its
+// domain goes in the address bar. SVG artwork (e.g. a coming-soon card) shows full-bleed.
 export function ProjectPreview({
   project,
   className,
@@ -14,7 +14,7 @@ export function ProjectPreview({
 }) {
   const { image, imageAlt, links } = project
 
-  if (!links.live) {
+  if (image.endsWith('.svg')) {
     return (
       <img
         src={image}
@@ -26,7 +26,7 @@ export function ProjectPreview({
     )
   }
 
-  const domain = new URL(links.live).host
+  const domain = links.live && new URL(links.live).host
 
   return (
     <div
@@ -44,10 +44,14 @@ export function ProjectPreview({
           <span className="size-2 rounded-full bg-line" />
           <span className="size-2 rounded-full bg-line" />
           <span className="size-2 rounded-full bg-line" />
-          <span className="mx-auto truncate rounded bg-bg px-2 font-mono text-[0.625rem] leading-4 text-muted">
-            {domain}
-          </span>
-          <span className="w-8" />
+          {domain && (
+            <>
+              <span className="mx-auto truncate rounded bg-bg px-2 font-mono text-[0.625rem] leading-4 text-muted">
+                {domain}
+              </span>
+              <span className="w-8" />
+            </>
+          )}
         </div>
         <img
           src={image}
