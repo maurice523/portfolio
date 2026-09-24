@@ -22,7 +22,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    slug: 'gemline-test-data-generator',
+    slug: 'order-test-data-generator',
     title: 'ERP Test Data Generator',
     tagline: 'AI-powered test data integrated into an ERP: from 12 orders an hour to 1,000+ in minutes.',
     description:
@@ -34,9 +34,9 @@ export const projects: Project[] = [
     highlights: [
       'Cut manual order entry from 12 orders per hour to 1,000+ orders in minutes',
       'Data pipeline that generates output based on statistical analysis of historical orders',
-      'Presented the product to Gemline’s Executive Leadership Team and Board Chair',
+      'Presented the product to a companies Executive Leadership Team and Board Chair',
     ],
-    image: '/projects/gemline-test-data-generator.webp',
+    image: '/projects/order-test-data-generator.webp',
     imageAlt: 'Screenshot of the ERP Test Data Generator showing generated sales orders',
     tools: ['Python', 'BAML', 'OpenAI API', 'React.js'],
     links: {
