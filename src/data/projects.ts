@@ -39,7 +39,10 @@ export const projects: Project[] = [
     image: '/projects/gemline-test-data-generator.webp',
     imageAlt: 'Screenshot of the ERP Test Data Generator showing generated sales orders',
     tools: ['Python', 'BAML', 'OpenAI API', 'React.js'],
-    links: {},
+    links: {
+      github: 'https://github.com/maurice523/order-tester-gem',
+      live: 'https://orders.mauriceneme.com',
+    },
     date: 'Jun 2026 – Aug 2026',
     status: 'completed',
     featured: true,
