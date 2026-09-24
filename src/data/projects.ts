@@ -24,7 +24,7 @@ export const projects: Project[] = [
   {
     slug: 'gemline-test-data-generator',
     title: 'ERP Test Data Generator',
-    tagline: 'AI-powered test data for Gemline’s ERP: from 12 orders an hour to 1,000+ in minutes.',
+    tagline: 'AI-powered test data integrated into an ERP: from 12 orders an hour to 1,000+ in minutes.',
     description:
       'A four-stage pipeline that turns a plain-English request into realistic orders.\n\n' +
       'Parse: a BAML function calls the OpenAI API to turn a request like “3 sample orders shipping UPS ground to the US” into typed parameters: order count, carrier, country, order type, and line and quantity limits.\n\n' +
