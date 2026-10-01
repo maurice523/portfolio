@@ -7,8 +7,9 @@ import { colorTokens, themesSchema, type ColorToken, type Theme } from '@/shared
 import { saveCollection } from '../api'
 import { useEditor } from '../drafts'
 import { EditorPage } from '../EditorPage'
-import { buttonClass, ColorInput, ItemControls, Panel, Select, TextInput, Toggle } from '../fields'
-import { move, replaceAt } from '../list'
+import { buttonClass, ColorInput, RemoveButton, Panel, Select, TextInput, Toggle } from '../fields'
+import { indexAfterMove, replaceAt } from '../list'
+import { SortableList } from '../SortableList'
 
 const tokenLabels: Record<ColorToken, string> = {
   bg: 'Page background',
@@ -66,15 +67,21 @@ export function ThemesPage() {
       editor={editor}
     >
       <Panel title="All themes">
-        <ul className="flex flex-col gap-1">
-          {themes.map((item, i) => (
-            <li
-              key={i}
+        <SortableList
+          items={themes}
+          onChange={setThemes}
+          label={(item) => item.name}
+          onMoved={(from, to) => setSelected(indexAfterMove(index, from, to))}
+          className="flex flex-col gap-1"
+        >
+          {(item, i, { handle, remove }) => (
+            <div
               className={clsx(
-                'flex items-center gap-2 rounded-md pl-3',
-                i === index ? 'bg-raised' : 'hover:bg-raised/60',
+                'flex items-center gap-1 rounded-md pl-1',
+                i === index ? 'bg-raised' : 'bg-surface hover:bg-raised/60',
               )}
             >
+              {handle}
               <button
                 type="button"
                 onClick={() => setSelected(i)}
@@ -95,19 +102,10 @@ export function ThemesPage() {
                   <span className="text-xs text-muted">Public</span>
                 )}
               </button>
-              <ItemControls
-                index={i}
-                count={themes.length}
-                label={item.name}
-                onMove={(to) => {
-                  setThemes(move(themes, i, to))
-                  if (i === index) setSelected(to)
-                }}
-                onRemove={() => !item.isDefault && setThemes(themes.filter((_, j) => j !== i))}
-              />
-            </li>
-          ))}
-        </ul>
+              {!item.isDefault && <RemoveButton label={item.name} onClick={remove} />}
+            </div>
+          )}
+        </SortableList>
         <p className="text-xs text-muted">
           The default theme can’t be removed. Make another theme the default first.
         </p>

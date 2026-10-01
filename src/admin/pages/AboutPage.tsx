@@ -6,16 +6,17 @@ import { EditorPage } from '../EditorPage'
 import {
   buttonClass,
   ColorInput,
-  ItemControls,
   MediaInput,
   NumberInput,
   Panel,
+  RemoveButton,
   Select,
   StringList,
   TextArea,
   TextInput,
 } from '../fields'
-import { move, replaceAt } from '../list'
+import { replaceAt } from '../list'
+import { SortableList } from '../SortableList'
 
 export function AboutPage() {
   const { settings, projects } = useContent()
@@ -82,54 +83,55 @@ export function AboutPage() {
           ))}
         </div>
 
-        {interests.map((chip, index) => {
-          const set = (patch: Partial<typeof chip>) =>
-            setInterests(replaceAt(interests, index, { ...chip, ...patch }))
-          return (
-            <div key={index} className="rounded-lg border border-line p-3">
-              <div className="mb-3 flex items-center justify-between gap-2">
-                <p className="text-sm font-medium" style={{ color: chip.color }}>
-                  {chip.text || 'New chip'}
-                </p>
-                <ItemControls
-                  index={index}
-                  count={interests.length}
-                  label={chip.text}
-                  onMove={(to) => setInterests(move(interests, index, to))}
-                  onRemove={() => setInterests(interests.filter((_, i) => i !== index))}
-                />
+        <SortableList items={interests} onChange={setInterests} label={(chip) => chip.text}>
+          {(chip, index, { handle, remove }) => {
+            const set = (patch: Partial<typeof chip>) =>
+              setInterests(replaceAt(interests, index, { ...chip, ...patch }))
+            return (
+              <div className="rounded-lg border border-line bg-surface p-3">
+                <div className="mb-3 flex items-center gap-1">
+                  <div className="-ml-1.5">{handle}</div>
+                  <p className="mr-auto text-sm font-medium" style={{ color: chip.color }}>
+                    {chip.text || 'New chip'}
+                  </p>
+                  <RemoveButton label={chip.text} onClick={remove} />
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                  <TextInput label="Text" value={chip.text} onChange={(text) => set({ text })} />
+                  <ColorInput
+                    label="Color"
+                    value={chip.color}
+                    onChange={(color) => set({ color })}
+                  />
+                  <NumberInput
+                    label="From top"
+                    suffix="%"
+                    min={0}
+                    max={100}
+                    value={chip.top}
+                    onChange={(top) => set({ top })}
+                  />
+                  <NumberInput
+                    label="From left"
+                    suffix="%"
+                    min={0}
+                    max={100}
+                    value={chip.left}
+                    onChange={(left) => set({ left })}
+                  />
+                  <NumberInput
+                    label="Tilt"
+                    suffix="°"
+                    min={-45}
+                    max={45}
+                    value={chip.rotate}
+                    onChange={(rotate) => set({ rotate })}
+                  />
+                </div>
               </div>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-                <TextInput label="Text" value={chip.text} onChange={(text) => set({ text })} />
-                <ColorInput label="Color" value={chip.color} onChange={(color) => set({ color })} />
-                <NumberInput
-                  label="From top"
-                  suffix="%"
-                  min={0}
-                  max={100}
-                  value={chip.top}
-                  onChange={(top) => set({ top })}
-                />
-                <NumberInput
-                  label="From left"
-                  suffix="%"
-                  min={0}
-                  max={100}
-                  value={chip.left}
-                  onChange={(left) => set({ left })}
-                />
-                <NumberInput
-                  label="Tilt"
-                  suffix="°"
-                  min={-45}
-                  max={45}
-                  value={chip.rotate}
-                  onChange={(rotate) => set({ rotate })}
-                />
-              </div>
-            </div>
-          )
-        })}
+            )
+          }}
+        </SortableList>
         <button
           type="button"
           className={`${buttonClass} self-start`}
@@ -205,31 +207,35 @@ function LogoList({
   return (
     <div className="flex flex-col gap-3">
       <p className="text-sm font-medium">{label}</p>
-      {logos.map((logo, index) => (
-        <div key={index} className="flex flex-col gap-3 rounded-lg border border-line p-3">
-          <div className="flex items-end gap-2">
-            <div className="flex-1">
-              <TextInput
-                label="Name"
-                value={logo.name}
-                onChange={(name) => onChange(replaceAt(logos, index, { ...logo, name }))}
-              />
+      <SortableList
+        items={logos}
+        onChange={onChange}
+        label={(logo) => logo.name}
+        className="flex flex-col gap-3"
+      >
+        {(logo, index, { handle, remove }) => (
+          <div className="flex flex-col gap-3 rounded-lg border border-line bg-surface p-3">
+            <div className="flex items-end gap-1">
+              <div className="-ml-1.5 pb-0.5">{handle}</div>
+              <div className="flex-1">
+                <TextInput
+                  label="Name"
+                  value={logo.name}
+                  onChange={(name) => onChange(replaceAt(logos, index, { ...logo, name }))}
+                />
+              </div>
+              <div className="pb-0.5">
+                <RemoveButton label={logo.name} onClick={remove} />
+              </div>
             </div>
-            <ItemControls
-              index={index}
-              count={logos.length}
-              label={logo.name}
-              onMove={(to) => onChange(move(logos, index, to))}
-              onRemove={() => onChange(logos.filter((_, i) => i !== index))}
+            <MediaInput
+              label="Logo image"
+              value={logo.src}
+              onChange={(src) => onChange(replaceAt(logos, index, { ...logo, src }))}
             />
           </div>
-          <MediaInput
-            label="Logo image"
-            value={logo.src}
-            onChange={(src) => onChange(replaceAt(logos, index, { ...logo, src }))}
-          />
-        </div>
-      ))}
+        )}
+      </SortableList>
       <button
         type="button"
         className={`${buttonClass} self-start`}

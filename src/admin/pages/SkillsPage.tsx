@@ -3,8 +3,9 @@ import { settingsSchemas } from '@/shared/schema'
 import { saveSettings } from '../api'
 import { useEditor } from '../drafts'
 import { EditorPage } from '../EditorPage'
-import { buttonClass, ItemControls, Panel, StringList, TextInput } from '../fields'
-import { move, replaceAt } from '../list'
+import { buttonClass, Panel, RemoveButton, StringList, TextInput } from '../fields'
+import { replaceAt } from '../list'
+import { SortableList } from '../SortableList'
 
 export function SkillsPage() {
   const editor = useEditor({
@@ -19,33 +20,32 @@ export function SkillsPage() {
 
   return (
     <EditorPage title="Skills" description="Grouped tools and technologies." editor={editor}>
-      {groups.map((group, index) => (
-        <Panel
-          key={index}
-          title={group.name || 'New group'}
-          actions={
-            <ItemControls
-              index={index}
-              count={groups.length}
-              label={`group ${group.name}`}
-              onMove={(to) => setGroups(move(groups, index, to))}
-              onRemove={() => setGroups(groups.filter((_, i) => i !== index))}
+      <SortableList
+        items={groups}
+        onChange={setGroups}
+        label={(group) => `group ${group.name}`}
+        className="flex flex-col gap-5"
+      >
+        {(group, index, { handle, remove }) => (
+          <Panel
+            title={group.name || 'New group'}
+            handle={handle}
+            actions={<RemoveButton label={`group ${group.name}`} onClick={remove} />}
+          >
+            <TextInput
+              label="Group name"
+              value={group.name}
+              onChange={(name) => setGroups(replaceAt(groups, index, { ...group, name }))}
             />
-          }
-        >
-          <TextInput
-            label="Group name"
-            value={group.name}
-            onChange={(name) => setGroups(replaceAt(groups, index, { ...group, name }))}
-          />
-          <StringList
-            label="Skills"
-            items={group.items}
-            onChange={(items) => setGroups(replaceAt(groups, index, { ...group, items }))}
-            addLabel="Add skill"
-          />
-        </Panel>
-      ))}
+            <StringList
+              label="Skills"
+              items={group.items}
+              onChange={(items) => setGroups(replaceAt(groups, index, { ...group, items }))}
+              addLabel="Add skill"
+            />
+          </Panel>
+        )}
+      </SortableList>
       <button
         type="button"
         className={`${buttonClass} self-start`}

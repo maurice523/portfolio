@@ -8,7 +8,7 @@ import { useEditor } from '../drafts'
 import { EditorPage } from '../EditorPage'
 import {
   buttonClass,
-  ItemControls,
+  RemoveButton,
   MediaInput,
   Panel,
   Select,
@@ -17,7 +17,8 @@ import {
   TextInput,
   Toggle,
 } from '../fields'
-import { move, replaceAt } from '../list'
+import { indexAfterMove, replaceAt } from '../list'
+import { SortableList } from '../SortableList'
 
 const statusLabels: Record<Project['status'], string> = {
   live: 'Live',
@@ -76,15 +77,21 @@ export function ProjectsPage() {
           </button>
         }
       >
-        <ul className="flex flex-col gap-1">
-          {projects.map((item, i) => (
-            <li
-              key={i}
+        <SortableList
+          items={projects}
+          onChange={setProjects}
+          label={(item) => item.title}
+          onMoved={(from, to) => setSelected(indexAfterMove(index, from, to))}
+          className="flex flex-col gap-1"
+        >
+          {(item, i, { handle, remove }) => (
+            <div
               className={clsx(
-                'flex items-center gap-2 rounded-md pl-3',
-                i === index ? 'bg-raised' : 'hover:bg-raised/60',
+                'flex items-center gap-1 rounded-md pl-1',
+                i === index ? 'bg-raised' : 'bg-surface hover:bg-raised/60',
               )}
             >
+              {handle}
               <button
                 type="button"
                 onClick={() => setSelected(i)}
@@ -94,19 +101,10 @@ export function ProjectsPage() {
                 {item.featured && <span className="text-xs text-accent">Featured</span>}
                 <span className="text-xs text-muted">{statusLabels[item.status]}</span>
               </button>
-              <ItemControls
-                index={i}
-                count={projects.length}
-                label={item.title}
-                onMove={(to) => {
-                  setProjects(move(projects, i, to))
-                  if (i === index) setSelected(to)
-                }}
-                onRemove={() => setProjects(projects.filter((_, j) => j !== i))}
-              />
-            </li>
-          ))}
-        </ul>
+              <RemoveButton label={item.title} onClick={remove} />
+            </div>
+          )}
+        </SortableList>
       </Panel>
 
       {project && (

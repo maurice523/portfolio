@@ -2,7 +2,8 @@
 import clsx from 'clsx'
 import { useId, useRef, useState, type ReactNode } from 'react'
 import { listMedia, uploadMedia, type MediaItem } from './api'
-import { move, replaceAt } from './list'
+import { replaceAt } from './list'
+import { SortableList } from './SortableList'
 
 const inputClass =
   'w-full rounded-md border border-line bg-bg px-3 py-2 text-sm text-fg placeholder:text-muted/60 focus:border-accent focus:outline-none'
@@ -11,26 +12,32 @@ export const buttonClass =
 export const primaryButtonClass =
   'inline-flex min-h-9 items-center gap-1.5 rounded-md bg-accent px-4 text-sm font-medium text-bg hover:bg-accent/90 disabled:opacity-50'
 const iconButtonClass =
-  'grid size-8 place-items-center rounded-md text-muted hover:bg-raised hover:text-fg disabled:opacity-30 disabled:hover:bg-transparent'
+  'grid size-8 place-items-center rounded-md text-muted hover:bg-raised hover:text-fg'
 
 export function Panel({
   title,
   description,
   children,
   actions,
+  handle,
 }: {
   title?: string
   description?: string
   children: ReactNode
   actions?: ReactNode
+  /** Drag handle, when the panel is a row in a SortableList. */
+  handle?: ReactNode
 }) {
   return (
     <section className="rounded-xl border border-line bg-surface p-4 md:p-5">
-      {(title || actions) && (
+      {(title || actions || handle) && (
         <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-          <div>
-            {title && <h2 className="font-semibold">{title}</h2>}
-            {description && <p className="mt-0.5 text-sm text-muted">{description}</p>}
+          <div className="flex items-start gap-2">
+            {handle && <div className="-ml-2">{handle}</div>}
+            <div>
+              {title && <h2 className="font-semibold">{title}</h2>}
+              {description && <p className="mt-0.5 text-sm text-muted">{description}</p>}
+            </div>
           </div>
           {actions}
         </div>
@@ -240,49 +247,18 @@ export function ColorInput({
   )
 }
 
-/** ↑ ↓ ✕ buttons for an item in a list. */
-export function ItemControls({
-  index,
-  count,
-  onMove,
-  onRemove,
-  label,
-}: {
-  index: number
-  count: number
-  onMove: (to: number) => void
-  onRemove: () => void
-  label: string
-}) {
+/** ✕ button that removes a row from a list. Pair it with a SortableList row's drag handle. */
+export function RemoveButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <div className="flex shrink-0 items-center">
-      <button
-        type="button"
-        className={iconButtonClass}
-        disabled={index === 0}
-        onClick={() => onMove(index - 1)}
-        aria-label={`Move ${label} up`}
-      >
-        ↑
-      </button>
-      <button
-        type="button"
-        className={iconButtonClass}
-        disabled={index === count - 1}
-        onClick={() => onMove(index + 1)}
-        aria-label={`Move ${label} down`}
-      >
-        ↓
-      </button>
-      <button
-        type="button"
-        className={clsx(iconButtonClass, 'hover:text-accent')}
-        onClick={onRemove}
-        aria-label={`Remove ${label}`}
-      >
-        ✕
-      </button>
-    </div>
+    <button
+      type="button"
+      className={clsx(iconButtonClass, 'shrink-0 hover:text-accent')}
+      onClick={onClick}
+      aria-label={`Remove ${label || 'item'}`}
+      title="Remove"
+    >
+      ✕
+    </button>
   )
 }
 
@@ -306,33 +282,34 @@ export function StringList({
     <div className="flex flex-col gap-2">
       <p className="text-sm font-medium">{label}</p>
       {hint && <p className="-mt-1 text-xs text-muted">{hint}</p>}
-      {items.map((item, index) => (
-        <div key={index} className="flex items-start gap-2">
-          {multiline ? (
-            <textarea
-              aria-label={`${label} ${index + 1}`}
-              rows={3}
-              value={item}
-              onChange={(event) => onChange(replaceAt(items, index, event.target.value))}
-              className={clsx(inputClass, 'resize-y leading-relaxed')}
-            />
-          ) : (
-            <input
-              aria-label={`${label} ${index + 1}`}
-              value={item}
-              onChange={(event) => onChange(replaceAt(items, index, event.target.value))}
-              className={inputClass}
-            />
-          )}
-          <ItemControls
-            index={index}
-            count={items.length}
-            label={`item ${index + 1}`}
-            onMove={(to) => onChange(move(items, index, to))}
-            onRemove={() => onChange(items.filter((_, i) => i !== index))}
-          />
-        </div>
-      ))}
+      <SortableList
+        items={items}
+        onChange={onChange}
+        label={(item, index) => item || `${label} ${index + 1}`}
+      >
+        {(item, index, { handle, remove }) => (
+          <div className="flex items-start gap-1">
+            {handle}
+            {multiline ? (
+              <textarea
+                aria-label={`${label} ${index + 1}`}
+                rows={3}
+                value={item}
+                onChange={(event) => onChange(replaceAt(items, index, event.target.value))}
+                className={clsx(inputClass, 'resize-y leading-relaxed')}
+              />
+            ) : (
+              <input
+                aria-label={`${label} ${index + 1}`}
+                value={item}
+                onChange={(event) => onChange(replaceAt(items, index, event.target.value))}
+                className={inputClass}
+              />
+            )}
+            <RemoveButton label={`${label} ${index + 1}`} onClick={remove} />
+          </div>
+        )}
+      </SortableList>
       <button
         type="button"
         className={clsx(buttonClass, 'self-start')}
