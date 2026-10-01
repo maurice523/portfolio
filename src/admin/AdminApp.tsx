@@ -72,7 +72,7 @@ export default function AdminApp() {
               {pages.map((page) => (
                 <li key={page.path} className="shrink-0">
                   <NavLink
-                    to={page.path}
+                    to={`/admin/${page.path}`}
                     className={({ isActive }) =>
                       clsx(
                         'flex min-h-9 items-center justify-between gap-2 rounded-md px-3 text-sm font-medium',
@@ -93,11 +93,13 @@ export default function AdminApp() {
 
         <main className="mx-auto max-w-4xl px-4 py-6 md:px-8 md:py-10">
           <Routes>
-            <Route index element={<Navigate to="projects" replace />} />
+            <Route index element={<Navigate to="/admin/projects" replace />} />
             {pages.map((page) => (
               <Route key={page.path} path={page.path} element={page.element} />
             ))}
-            <Route path="*" element={<Navigate to="projects" replace />} />
+            {/* Absolute paths: a relative "projects" inside this catch-all would resolve against
+                the unknown URL itself and keep appending /projects forever. */}
+            <Route path="*" element={<Navigate to="/admin/projects" replace />} />
           </Routes>
         </main>
       </div>
