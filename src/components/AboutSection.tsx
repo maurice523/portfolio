@@ -1,37 +1,21 @@
 import { motion } from 'motion/react'
-import { useRef, type CSSProperties } from 'react'
+import { Fragment, useRef } from 'react'
 import { Link } from 'react-router'
-import { profile } from '@/data/profile'
+import { useContent } from '@/content/context'
 import { OrbitingCircles } from './OrbitingCircles'
 import { Section } from './Section'
-
-const chips: { text: string; color: string; style: CSSProperties }[] = [
-  { text: 'Skiing', color: '#6cb4ff', style: { top: '8%', left: '6%', rotate: '-8deg' } },
-  { text: 'Wakeboarding', color: '#5ee0f0', style: { top: '14%', left: '48%', rotate: '10deg' } },
-  { text: 'Climbing', color: '#b5e35d', style: { top: '30%', left: '20%', rotate: '4deg' } },
-  { text: 'Bass', color: '#ff6a1f', style: { top: '46%', left: '62%', rotate: '-14deg' } },
-  { text: 'Soccer', color: '#f2c46d', style: { top: '52%', left: '8%', rotate: '12deg' } },
-  { text: 'Cars', color: '#c79bff', style: { top: '66%', left: '38%', rotate: '-5deg' } },
-  { text: 'Ecuador', color: '#7aa2ff', style: { top: '80%', left: '4%', rotate: '6deg' } },
-  { text: 'Boston', color: '#34f33e', style: { top: '82%', left: '62%', rotate: '-9deg' } },
-]
-
-const innerRing = ['python', 'typescript', 'react', 'java', 'postgresql'].map((name) => ({
-  name,
-  src: `/logos/${name}.svg`,
-}))
-const outerRing = ['javascript', 'fastapi', 'supabase', 'git', 'tailwindcss', 'jupyter'].map(
-  (name) => ({ name, src: `/logos/${name}.svg` }),
-)
 
 const tile = 'relative overflow-hidden rounded-2xl border border-line bg-surface p-5 md:p-6'
 
 export function AboutSection() {
   const playground = useRef<HTMLDivElement>(null)
-  const { about, education } = profile
+  const { settings, projects } = useContent()
+  const { profile, about, education, sections } = settings
+  const { interests, techStack } = about
+  const building = projects.find((project) => project.slug === about.currentlyBuilding.slug)
 
   return (
-    <Section id="about" title="About me" intro="A bit about who I am and what I work with.">
+    <Section id="about" title={sections.about.title} intro={sections.about.intro}>
       <div className="grid grid-cols-1 gap-4 md:auto-rows-[minmax(15rem,auto)] md:grid-cols-6">
         {/* Bio with photo */}
         <div className={`${tile} md:col-span-4`}>
@@ -43,7 +27,7 @@ export function AboutSection() {
             />
             <div className="flex flex-col gap-3 text-muted">
               <p className="text-lg font-semibold text-fg">{profile.name}</p>
-              {about.map((paragraph) => (
+              {about.bio.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
@@ -52,21 +36,22 @@ export function AboutSection() {
 
         {/* Drag playground */}
         <div className={`${tile} min-h-[26rem] md:col-span-2 md:row-span-2 md:min-h-80`}>
-          <p className="text-sm font-medium text-muted">Drag things around</p>
+          <p className="text-sm font-medium text-muted">{about.playgroundLabel}</p>
           <ul className="sr-only">
-            {chips.map((chip) => (
+            {interests.map((chip) => (
               <li key={chip.text}>{chip.text}</li>
             ))}
           </ul>
           <div ref={playground} aria-hidden="true" className="absolute inset-0 top-10">
             <p className="pointer-events-none absolute inset-0 grid place-items-center text-center text-4xl leading-tight font-semibold text-line select-none">
-              code
-              <br />
-              data
-              <br />
-              bass
+              {about.playgroundWords.map((word, i) => (
+                <Fragment key={word}>
+                  {i > 0 && <br />}
+                  {word}
+                </Fragment>
+              ))}
             </p>
-            {chips.map((chip) => (
+            {interests.map((chip) => (
               <motion.div
                 key={chip.text}
                 drag
@@ -75,7 +60,9 @@ export function AboutSection() {
                 whileHover={{ scale: 1.05 }}
                 whileDrag={{ scale: 1.1, zIndex: 10 }}
                 style={{
-                  ...chip.style,
+                  top: `${chip.top}%`,
+                  left: `${chip.left}%`,
+                  rotate: `${chip.rotate}deg`,
                   color: chip.color,
                   borderColor: `color-mix(in srgb, ${chip.color} 45%, transparent)`,
                   // Tinted but opaque, so the faded text behind doesn't show through
@@ -89,8 +76,8 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* Education */}
-        <div className={`${tile} md:col-span-2`}>
+        {/* Education (wider when there's no "Currently building" card next to it) */}
+        <div className={`${tile} ${building ? 'md:col-span-2' : 'md:col-span-4'}`}>
           <p className="text-sm font-medium text-muted">Education</p>
           <p className="mt-2 text-lg font-semibold">{education.school}</p>
           <p className="mt-1 text-sm text-muted">{education.degree}</p>
@@ -102,35 +89,38 @@ export function AboutSection() {
         </div>
 
         {/* Currently building */}
-        <Link
-          to="/projects/move"
-          className={`${tile} group flex flex-col justify-between gap-6 hover:border-accent/50 md:col-span-2`}
-        >
-          <p className="flex items-center gap-2 text-sm font-medium text-muted">
-            <span className="size-2 animate-pulse rounded-full bg-amber motion-reduce:animate-none" />
-            Currently building
-          </p>
-          <div>
-            <p className="text-2xl font-semibold group-hover:text-accent">Move</p>
-            <p className="mt-1 text-sm text-muted">
-              A ridesharing app for students, which I’m co-founding. See the project →
+        {building && (
+          <Link
+            to={`/projects/${building.slug}`}
+            className={`${tile} group flex flex-col justify-between gap-6 hover:border-accent/50 md:col-span-2`}
+          >
+            <p className="flex items-center gap-2 text-sm font-medium text-muted">
+              <span className="size-2 animate-pulse rounded-full bg-amber motion-reduce:animate-none" />
+              Currently building
             </p>
-          </div>
-          <p></p>
-        </Link>
+            <div>
+              <p className="text-2xl font-semibold group-hover:text-accent">{building.title}</p>
+              <p className="mt-1 text-sm text-muted">{about.currentlyBuilding.blurb}</p>
+            </div>
+            <p></p>
+          </Link>
+        )}
 
         {/* Tech stack with orbiting logos */}
         <div className={`${tile} grid gap-6 md:col-span-6 md:grid-cols-2 md:items-center`}>
           <div className="max-w-sm">
-            <p className="text-lg font-semibold">Tech stack</p>
-            <p className="mt-2 text-muted">
-              The languages and tools I reach for most, from data work in Python and SQL to web apps
-              in React.
-            </p>
+            <p className="text-lg font-semibold">{techStack.title}</p>
+            <p className="mt-2 text-muted">{techStack.text}</p>
           </div>
           <div className="relative mx-auto aspect-square w-full max-w-[20rem] max-sm:scale-[0.8]">
-            <OrbitingCircles icons={innerRing} radius={70} duration={24} size={40} />
-            <OrbitingCircles icons={outerRing} radius={140} duration={36} size={40} reverse />
+            <OrbitingCircles icons={techStack.innerRing} radius={70} duration={24} size={40} />
+            <OrbitingCircles
+              icons={techStack.outerRing}
+              radius={140}
+              duration={36}
+              size={40}
+              reverse
+            />
           </div>
         </div>
       </div>

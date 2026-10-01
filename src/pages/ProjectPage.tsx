@@ -4,13 +4,14 @@ import { ExternalLinkIcon, GitHubIcon } from '@/components/icons'
 import { ProjectPreview } from '@/components/ProjectPreview'
 import { StatusBadge } from '@/components/StatusBadge'
 import { ToolChip } from '@/components/ToolChip'
-import { getProjectBySlug } from '@/data/projects'
-import { profile } from '@/data/profile'
+import { useContent } from '@/content/context'
 import { NotFoundPage } from './NotFoundPage'
 
 export function ProjectPage() {
   const { slug = '' } = useParams()
-  const project = getProjectBySlug(slug)
+  const { projects, settings } = useContent()
+  const { profile } = settings
+  const project = projects.find((item) => item.slug === slug)
 
   if (!project) return <NotFoundPage />
 
@@ -77,7 +78,7 @@ export function ProjectPage() {
                 </p>
               ))}
 
-              {highlights && highlights.length > 0 && (
+              {highlights.length > 0 && (
                 <>
                   <h2 className="mt-8 text-xl font-semibold tracking-tight">Highlights</h2>
                   <ul className="mt-4 flex flex-col gap-3">

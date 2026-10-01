@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import type { Project } from '@/types/project'
+import type { Project } from '@/shared/schema'
 import { ProjectCard } from './ProjectCard'
 
 // Phones: 1 column. Tablets: 2 columns.

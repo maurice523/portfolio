@@ -1,11 +1,43 @@
-// Cloudflare deploy config (used in the deploy phase).
-// "single-page-application" makes /projects/<slug> work on refresh or direct visits.
+// Cloudflare config. Git pushes deploy with this file, so bindings live here, not in the dashboard.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "mauriceneme",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-09-01",
+
+  // Only reachable through mauriceneme.com, where Cloudflare Access guards /admin.
+  "workers_dev": false,
+  "preview_urls": false,
+
   "assets": {
-    "directory": "./dist",
+    "binding": "ASSETS",
+    // "single-page-application" serves index.html for /projects/<slug> and other app routes.
     "not_found_handling": "single-page-application",
+    // The Worker sees every request first: it answers /api and /media, and adds the site
+    // content and theme colors to each HTML page before sending it.
+    "run_worker_first": true,
   },
+
+  // Site content (text, projects, experience, themes). Schema: migrations/.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "portfolio",
+      "database_id": "c2407c61-1290-4040-a079-232970882d67",
+      "migrations_dir": "migrations",
+    },
+  ],
+
+  // Images and files uploaded from /admin, served at /media/<key>.
+  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "portfolio-media" }],
+
+  "vars": {
+    // Cloudflare Access (Zero Trust) settings, used to verify the admin's login token.
+    // Not secrets: the token's signature is what proves who is signed in.
+    "ACCESS_TEAM_DOMAIN": "mauriceneme.cloudflareaccess.com",
+    "ACCESS_AUD": "d41edafcdf50d9dd3cc43d40c70718a36d2dfa5d76b64b9b4e8098bbe36252fb",
+    "ADMIN_EMAIL": "mauricenemee@gmail.com",
+  },
+
+  "observability": { "enabled": true },
 }

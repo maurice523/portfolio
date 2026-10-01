@@ -1,4 +1,4 @@
-import { profile } from '@/data/profile'
+import { useContent } from '@/content/context'
 import { GitHubIcon, LinkedInIcon, MailIcon } from './icons'
 import { Section } from './Section'
 
@@ -6,14 +6,11 @@ const secondaryButton =
   'inline-flex min-h-11 items-center gap-2 rounded-lg border border-line px-4 font-medium hover:border-muted'
 
 export function ContactSection() {
+  const { profile, sections } = useContent().settings
   const { email, links } = profile
 
   return (
-    <Section
-      id="contact"
-      title="Get in touch"
-      intro="Whether it’s an internship, a project idea or just a question about my work, my inbox is open."
-    >
+    <Section id="contact" title={sections.contact.title} intro={sections.contact.intro}>
       <div className="flex flex-wrap gap-3">
         <a
           href={`mailto:${email}`}

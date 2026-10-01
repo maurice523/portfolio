@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import type { Project } from '@/types/project'
+import type { Project } from '@/shared/schema'
 import { ExternalLinkIcon, GitHubIcon } from './icons'
 import { ProjectPreview } from './ProjectPreview'
 import { StatusBadge } from './StatusBadge'

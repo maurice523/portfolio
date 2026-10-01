@@ -1,8 +1,10 @@
 import { Link } from 'react-router'
 import { Container } from '@/components/Container'
-import { profile } from '@/data/profile'
+import { useContent } from '@/content/context'
 
 export function NotFoundPage() {
+  const { profile } = useContent().settings
+
   return (
     <main>
       <title>{`Page not found | ${profile.name}`}</title>

@@ -5,10 +5,13 @@ import { Hero } from '@/components/Hero'
 import { ProjectGrid } from '@/components/ProjectGrid'
 import { Section } from '@/components/Section'
 import { SkillsSection } from '@/components/SkillsSection'
-import { getProjects } from '@/data/projects'
+import { useContent } from '@/content/context'
 
 export function HomePage() {
-  const projects = getProjects()
+  const content = useContent()
+  const copy = content.settings.sections.projects
+  // Featured first; otherwise in the order set in /admin.
+  const projects = [...content.projects].sort((a, b) => Number(b.featured) - Number(a.featured))
 
   return (
     <main>
@@ -16,9 +19,9 @@ export function HomePage() {
 
       <Section
         id="projects"
-        title="Projects"
+        title={copy.title}
         eyebrow={`${projects.length} projects · featured first`}
-        intro="Things I’ve built, from internship tools to side projects."
+        intro={copy.intro}
       >
         <ProjectGrid projects={projects} />
       </Section>

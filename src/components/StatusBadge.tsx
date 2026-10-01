@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import type { ProjectStatus } from '@/types/project'
+import type { ProjectStatus } from '@/shared/schema'
 
 const labels: Record<ProjectStatus, string> = {
   live: 'Live',

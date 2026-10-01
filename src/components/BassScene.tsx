@@ -47,14 +47,25 @@ export default function BassScene() {
     const camera = new PerspectiveCamera(32, 1, 0.1, 100)
     camera.position.set(0, 0, 6)
 
-    // Lighting: soft fill, a warm key light and an orange rim light that matches the site accent
+    // Lighting: soft fill, a warm key light and a rim light in the theme's accent color
     scene.add(new HemisphereLight(0xffffff, 0x1a1f2b, 1.4))
     const key = new DirectionalLight(0xfff1dc, 3)
     key.position.set(3, 4, 5)
     scene.add(key)
-    const rim = new DirectionalLight(new Color('#ff6a1f'), 4)
+    const rim = new DirectionalLight(new Color(), 4)
     rim.position.set(-4, 2, -3)
     scene.add(rim)
+    const matchAccent = () => {
+      const accent = getComputedStyle(document.documentElement).getPropertyValue('--color-accent')
+      rim.color.set(accent.trim() || '#ff6a1f')
+    }
+    matchAccent()
+    // Re-color when the visitor switches theme (ThemePicker sets <html data-theme>)
+    const themeObserver = new MutationObserver(() => {
+      matchAccent()
+      render()
+    })
+    themeObserver.observe(document.documentElement, { attributeFilter: ['data-theme'] })
 
     // The bass sits inside a pivot group so we can float/rotate it around its center
     const pivot = new Group()
@@ -134,6 +145,7 @@ export default function BassScene() {
       window.removeEventListener('pointermove', onPointerMove)
       resizeObserver.disconnect()
       visibilityObserver.disconnect()
+      themeObserver.disconnect()
       renderer.dispose()
       renderer.domElement.remove()
     }

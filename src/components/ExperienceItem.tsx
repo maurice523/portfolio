@@ -1,4 +1,4 @@
-import type { Experience } from '@/data/profile'
+import type { Experience } from '@/shared/schema'
 
 // One job in the Experience timeline.
 export function ExperienceItem({ item }: { item: Experience }) {

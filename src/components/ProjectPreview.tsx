@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import type { Project } from '@/types/project'
+import type { Project } from '@/shared/schema'
 
 // The image at the top of a card / project page.
 // Screenshots sit in a browser window that rises from the bottom edge of a dot-grid
