@@ -24,6 +24,8 @@ export const seed: Content = {
       description:
         'Maurice Neme: software developer and Data Analytics & CIS student at Bentley University. Projects, experience and contact.',
       footerNote: 'Built with React and Tailwind CSS',
+      favicon: '/favicon.svg',
+      adminFavicon: '',
     },
     hero: {
       eyebrow: 'Aspiring Software developer & Data Analyst · Boston, MA',

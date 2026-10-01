@@ -123,6 +123,10 @@ export const settingsSchemas = {
     /** Search engine description. */
     description: text,
     footerNote: text,
+    /** Browser tab icon for the public site. Empty uses the built-in /favicon.svg. */
+    favicon: url,
+    /** Browser tab icon for /admin. Empty uses the site favicon. */
+    adminFavicon: url,
   }),
   hero: z.object({
     eyebrow: text,

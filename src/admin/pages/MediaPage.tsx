@@ -75,7 +75,7 @@ export function MediaPage() {
           </button>
         }
         title={items ? `${items.length} files` : 'Loading…'}
-        description="PNG, JPEG, WebP, GIF, AVIF, SVG or PDF, up to 10 MB each."
+        description="PNG, JPEG, WebP, GIF, AVIF, SVG, ICO or PDF, up to 10 MB each."
       >
         <input
           ref={fileInput}

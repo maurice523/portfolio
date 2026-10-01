@@ -111,7 +111,9 @@ async function servePage(request: Request, env: Env): Promise<Response> {
     return page
   }
 
-  const response = injectContent(page, content)
+  const { pathname } = new URL(request.url)
+  const area = pathname === '/admin' || pathname.startsWith('/admin/') ? 'admin' : 'site'
+  const response = injectContent(page, content, area)
   const out = new Response(response.body, response)
   out.headers.delete('etag')
   out.headers.delete('last-modified')

@@ -3,7 +3,8 @@ import { settingsSchemas } from '@/shared/schema'
 import { saveSettings } from '../api'
 import { useEditor } from '../drafts'
 import { EditorPage } from '../EditorPage'
-import { Panel, TextArea, TextInput } from '../fields'
+import { DEFAULT_FAVICON } from '@/shared/favicon'
+import { MediaInput, Panel, TextArea, TextInput } from '../fields'
 
 export function SitePage() {
   const editor = useEditor({
@@ -38,6 +39,23 @@ export function SitePage() {
           hint="Shown after “© year Your Name ·” in the footer."
           value={draft.footerNote}
           onChange={(footerNote) => setDraft({ ...draft, footerNote })}
+        />
+      </Panel>
+      <Panel
+        title="Favicons"
+        description="The small icon in the browser tab. Use a square image, at least 64×64: SVG or PNG work best, ICO works too."
+      >
+        <MediaInput
+          label="Site favicon"
+          hint={`Leave empty to use the built-in icon (${DEFAULT_FAVICON}).`}
+          value={draft.favicon}
+          onChange={(favicon) => setDraft({ ...draft, favicon })}
+        />
+        <MediaInput
+          label="Admin favicon"
+          hint="Shown on /admin pages. Leave empty to use the site favicon. A different icon makes the admin tab easy to spot."
+          value={draft.adminFavicon}
+          onChange={(adminFavicon) => setDraft({ ...draft, adminFavicon })}
         />
       </Panel>
     </EditorPage>

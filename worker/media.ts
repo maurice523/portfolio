@@ -10,6 +10,8 @@ const ALLOWED_TYPES = new Set([
   'image/gif',
   'image/avif',
   'image/svg+xml',
+  'image/x-icon',
+  'image/vnd.microsoft.icon',
   'application/pdf',
 ])
 

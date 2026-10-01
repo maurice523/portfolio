@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import { Navigate, NavLink, Route, Routes } from 'react-router'
 import { useContent } from '@/content/context'
+import { useFavicon } from '@/content/useFavicon'
 import { DraftsContext, isDirty, type Drafts } from './drafts'
 import { AboutPage } from './pages/AboutPage'
 import { EducationPage } from './pages/EducationPage'
@@ -34,6 +35,7 @@ const pages = [
 export default function AdminApp() {
   const content = useContent()
   const [drafts, setDrafts] = useState<Drafts>({})
+  useFavicon('admin')
   const savedFor: Record<string, unknown> = {
     projects: content.projects,
     themes: content.themes,
