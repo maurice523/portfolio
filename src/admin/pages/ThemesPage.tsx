@@ -49,10 +49,7 @@ export function ThemesPage() {
   function addCopy(source: Theme) {
     let id = toId(`${source.name} copy`)
     while (themes.some((t) => t.id === id)) id += '-2'
-    setThemes([
-      ...themes,
-      { ...source, id, name: `${source.name} copy`, isDefault: false, isPublic: false },
-    ])
+    setThemes([...themes, { ...source, id, name: `${source.name} copy`, isDefault: false }])
     setSelected(themes.length)
   }
 
@@ -63,7 +60,7 @@ export function ThemesPage() {
   return (
     <EditorPage
       title="Themes"
-      description="Color schemes for the whole site. The default is what new visitors see; public themes appear as swatches in the top menu."
+      description="Color schemes for the whole site. Everyone sees the default theme; the others are kept here so you can switch to one later."
       editor={editor}
     >
       <Panel title="All themes">
@@ -98,9 +95,6 @@ export function ThemesPage() {
                 </span>
                 <span className="font-medium">{item.name || 'Untitled'}</span>
                 {item.isDefault && <span className="text-xs text-accent">Default</span>}
-                {item.isPublic && !item.isDefault && (
-                  <span className="text-xs text-muted">Public</span>
-                )}
               </button>
               {!item.isDefault && <RemoveButton label={item.name} onClick={remove} />}
             </div>
@@ -135,15 +129,9 @@ export function ThemesPage() {
             </div>
             <Toggle
               label="Default theme"
-              hint="What new visitors see."
+              hint="The theme everyone sees."
               checked={theme.isDefault}
               onChange={(checked) => checked && makeDefault()}
-            />
-            <Toggle
-              label="Public"
-              hint="Visitors can switch to it from the menu. The switcher appears once two or more themes are available."
-              checked={theme.isPublic}
-              onChange={(isPublic) => setTheme({ isPublic })}
             />
             <div className="grid gap-4 sm:grid-cols-2">
               {colorTokens.map((token) => (

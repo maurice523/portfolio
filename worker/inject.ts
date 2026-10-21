@@ -3,7 +3,7 @@
 // first paint, so colors never flash.
 import { CONTENT_ELEMENT_ID, type Content } from '../src/shared/schema.ts'
 import { faviconHref, type SiteArea } from '../src/shared/favicon.ts'
-import { getDefaultTheme, themeBootScript, themesCss } from '../src/shared/theme.ts'
+import { getDefaultTheme, themesCss } from '../src/shared/theme.ts'
 
 export function injectContent(page: Response, content: Content, area: SiteArea): Response {
   const { site } = content.settings
@@ -32,7 +32,6 @@ export function injectContent(page: Response, content: Content, area: SiteArea):
       element: (el) =>
         void el.append(
           `<style id="theme-css">${themesCss(content.themes)}</style>` +
-            `<script>${themeBootScript(content.themes)}</script>` +
             `<script type="application/json" id="${CONTENT_ELEMENT_ID}">${json}</script>`,
           { html: true },
         ),

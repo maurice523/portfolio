@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout'
 import { HomePage } from '@/pages/HomePage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { ProjectPage } from '@/pages/ProjectPage'
+import { SectionPage } from '@/pages/SectionPage'
 
 // The admin dashboard loads separately, so visitors never download it.
 const AdminApp = lazy(() => import('@/admin/AdminApp'))
@@ -13,7 +14,11 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
+        <Route path="projects" element={<SectionPage id="projects" />} />
         <Route path="projects/:slug" element={<ProjectPage />} />
+        <Route path="experience" element={<SectionPage id="experience" />} />
+        <Route path="about" element={<SectionPage id="about" />} />
+        <Route path="contact" element={<SectionPage id="contact" />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
       <Route

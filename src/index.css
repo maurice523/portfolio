@@ -13,7 +13,7 @@
   --color-green: #6fcf8f;
 
   --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Bricolage Grotesque Variable', 'IBM Plex Sans', ui-sans-serif, sans-serif;
+  --font-display: 'Archivo Variable', 'IBM Plex Sans', ui-sans-serif, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   @keyframes orbit {
@@ -71,4 +71,18 @@
       scroll-behavior: auto;
     }
   }
+}
+
+/* Page changes (see PageTransition.tsx). A title floats between the home menu and its page, and
+   a project's title and image float between its row and its page, while the rest fades. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+}
+
+::view-transition-group(page-title),
+::view-transition-group(project-title),
+::view-transition-group(project-image) {
+  animation-duration: 0.85s;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.25, 1);
 }

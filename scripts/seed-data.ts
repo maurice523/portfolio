@@ -277,7 +277,6 @@ export const seed: Content = {
         amber: '#f2c46d',
         green: '#6fcf8f',
       },
-      isPublic: true,
       isDefault: true,
     },
     {
@@ -295,7 +294,6 @@ export const seed: Content = {
         amber: '#f2c46d',
         green: '#6fcf8f',
       },
-      isPublic: false,
       isDefault: false,
     },
     {
@@ -313,7 +311,6 @@ export const seed: Content = {
         amber: '#a86b00',
         green: '#23794a',
       },
-      isPublic: false,
       isDefault: false,
     },
   ],

@@ -1,54 +1,91 @@
 import clsx from 'clsx'
-import { Link } from 'react-router'
+import { motion } from 'motion/react'
+import { useRef } from 'react'
 import type { Project } from '@/shared/schema'
 import { ExternalLinkIcon, GitHubIcon } from './icons'
+import { PageLink } from './PageTransition'
+import { usePageExit, useSurroundings } from './pageExit'
 import { ProjectPreview } from './ProjectPreview'
 import { StatusBadge } from './StatusBadge'
 import { ToolChip } from './ToolChip'
+import { useTightWidth } from './useTightWidth'
 
 // One project row: preview on the left, details on the right. Featured projects get a larger
 // preview. The whole row links to the project page; the GitHub / live icons sit on top and
 // open in a new tab.
+// Opening a project, its title and image float to their places on the project page while the
+// rest of the list makes way; coming back, they float back into the row (see PageTransition.tsx).
 export function ProjectCard({ project }: { project: Project }) {
   const { slug, title, tagline, tools, links, date, status, featured } = project
+  const path = `/projects/${slug}`
+  const { leavingTo, arrivedFrom, landing } = usePageExit()
+  const travels = leavingTo === path || (arrivedFrom === path && landing)
+  const fade = useSurroundings()
+  const stay = useSurroundings(travels)
+  const titleBox = useRef<HTMLSpanElement>(null)
+  useTightWidth(titleBox, title)
 
   return (
     <article
+      // Where the projects page scrolls to when you come back from this project
+      data-card-for={path}
       className={clsx(
         'group relative grid gap-6 py-8 md:items-center md:gap-10',
         featured ? 'md:grid-cols-[7fr_5fr]' : 'md:grid-cols-[5fr_7fr]',
       )}
     >
-      <ProjectPreview
-        project={project}
-        className="aspect-[2/1] overflow-hidden rounded-lg border border-line"
-      />
+      <motion.div {...stay} style={{ viewTransitionName: travels ? 'project-image' : undefined }}>
+        <ProjectPreview
+          project={project}
+          className="aspect-[2/1] overflow-hidden rounded-lg border border-line"
+        />
+      </motion.div>
 
       <div className="flex flex-col gap-3">
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+        <motion.div
+          {...fade}
+          className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1"
+        >
           <StatusBadge status={status} />
           <span className="text-sm text-muted tabular-nums">{date}</span>
-        </div>
+        </motion.div>
 
-        <h3 className="text-3xl leading-none font-bold tracking-[-0.02em] [font-stretch:85%] md:text-4xl">
-          {/* The ::after makes this link cover the whole row */}
-          <Link
-            to={`/projects/${slug}`}
-            className="decoration-accent decoration-2 underline-offset-4 group-hover:underline after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-lg focus-visible:after:outline-2 focus-visible:after:outline-accent"
+        <motion.h3
+          {...stay}
+          className="text-3xl leading-none font-extrabold tracking-[-0.015em] [font-stretch:112%] md:text-4xl"
+        >
+          {/* The box that floats to the project page's title: one inline-block, as wide as its
+              longest line. Plain wrapping (not balanced), so its lines break in the same places
+              as the page title's. */}
+          <span
+            ref={titleBox}
+            style={{ viewTransitionName: travels ? 'project-title' : undefined }}
+            className="inline-block text-wrap"
           >
-            {title}
-          </Link>
-        </h3>
-        <p className="max-w-prose text-muted">{tagline}</p>
+            {/* The ::after makes this link cover the whole row */}
+            <PageLink
+              to={path}
+              className={clsx(
+                "decoration-accent decoration-2 underline-offset-4 after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-lg focus-visible:after:outline-2 focus-visible:after:outline-accent",
+                !travels && 'group-hover:underline',
+              )}
+            >
+              {title}
+            </PageLink>
+          </span>
+        </motion.h3>
+        <motion.p {...fade} className="max-w-prose text-muted">
+          {tagline}
+        </motion.p>
 
-        <ul className="flex flex-wrap gap-1.5" aria-label="Tools used">
+        <motion.ul {...fade} className="flex flex-wrap gap-1.5" aria-label="Tools used">
           {tools.map((tool) => (
             <ToolChip key={tool} name={tool} />
           ))}
-        </ul>
+        </motion.ul>
 
         {(links.github || links.live) && (
-          <div className="relative z-10 -ml-3 flex gap-1">
+          <motion.div {...fade} className="relative z-10 -ml-3 flex gap-1">
             {links.github && (
               <a
                 href={links.github}
@@ -71,7 +108,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 <ExternalLinkIcon />
               </a>
             )}
-          </div>
+          </motion.div>
         )}
       </div>
     </article>

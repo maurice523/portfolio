@@ -1,8 +1,10 @@
-import { useEffect, useRef, useSyncExternalStore, type PointerEvent } from 'react'
+import clsx from 'clsx'
+import { useEffect, useRef, type PointerEvent } from 'react'
 
-// A playable photo of a Lake Placid Blue Jazz Bass. The photo (public/bass.webp) has no
-// strings; they're drawn on top so they can vibrate. It lies down (body left, headstock right)
-// on wide screens, and the same picture is rotated to stand upright on narrow ones.
+// A playable photo of a Lake Placid Blue Jazz Bass, standing upright with the headstock on top.
+// The photo (public/bass.webp) lies on its side and has no strings: it's rotated here, and the
+// strings are drawn on top so they can vibrate. It fills the width of its box on small screens
+// and the height of its box from the lg breakpoint up.
 // Click a spot on the neck to play that fret, or drag across the strings to strum.
 
 const IMAGE = '/bass.webp'
@@ -85,18 +87,7 @@ function pluckBuffer(ctx: AudioContext, freq: number): AudioBuffer {
   return buffer
 }
 
-// Upright on phones and tablets, lying down from the lg breakpoint (1024px) up
-const uprightQuery = '(max-width: 1023px)'
-const subscribe = (onChange: () => void) => {
-  const query = window.matchMedia(uprightQuery)
-  query.addEventListener('change', onChange)
-  return () => query.removeEventListener('change', onChange)
-}
-const useUpright = () =>
-  useSyncExternalStore(subscribe, () => window.matchMedia(uprightQuery).matches)
-
-export function BassGuitar() {
-  const upright = useUpright()
+export function BassGuitar({ className }: { className?: string }) {
   const drawing = useRef<SVGGElement>(null)
   const paths = useRef<(SVGPathElement | null)[]>([])
   const fingers = useRef<(SVGCircleElement | null)[]>([])
@@ -256,24 +247,26 @@ export function BassGuitar() {
   }
 
   return (
-    <figure className="flex flex-col items-center">
+    <figure
+      className={clsx(
+        'lg:grid lg:grid-rows-[minmax(0,1fr)_auto] lg:justify-items-center',
+        className,
+      )}
+    >
+      {/* One side is set by the box; the other follows from the photo's proportions */}
       <svg
-        viewBox={
-          upright ? `${CROP_TOP} 0 ${CROP_HEIGHT} ${W}` : `0 ${CROP_TOP} ${W} ${CROP_HEIGHT}`
-        }
+        viewBox={`${CROP_TOP} 0 ${CROP_HEIGHT} ${W}`}
         role="img"
         aria-label="Blue Jazz Bass. Click a spot on the neck to play that fret, or drag across the strings to strum."
         onClick={handleClick}
         onPointerDown={() => (strummed.current = false)}
         onPointerMove={handlePointerMove}
         onPointerLeave={() => (lastPoint.current = null)}
-        className={
-          upright
-            ? 'block w-full max-w-[21rem] cursor-pointer touch-pan-y select-none'
-            : 'block w-full max-w-[100rem] cursor-pointer touch-manipulation select-none'
-        }
+        // Vertical scrolling still works on touch screens; a sideways swipe strums
+        className="block aspect-[540/1800] w-full cursor-pointer touch-pan-y select-none lg:h-full lg:w-auto"
       >
-        <g ref={drawing} transform={upright ? `matrix(0 -1 1 0 0 ${W})` : undefined}>
+        {/* Turns the photo a quarter turn so the headstock points up */}
+        <g ref={drawing} transform={`matrix(0 -1 1 0 0 ${W})`}>
           <image href={IMAGE} width={W} height={H} />
 
           {/* Strings: the still part from the nut to each tuner post, then the part that vibrates */}
@@ -319,13 +312,9 @@ export function BassGuitar() {
         </g>
       </svg>
 
-      <figcaption className="mt-6 flex flex-col items-center gap-3 px-4 text-center">
-        <span className="text-sm text-muted">
-          {upright
-            ? 'Tap the neck to play a note, or swipe across the strings to strum.'
-            : 'Click anywhere on the neck to play that fret, or drag across the strings to strum.'}
-        </span>
-        <span role="group" aria-label="Open strings" className="flex gap-2">
+      {/* contain: the caption wraps to the bass's width instead of widening the column */}
+      <figcaption className="mt-4 flex w-full flex-col items-center gap-2 text-center [contain:inline-size]">
+        <span role="group" aria-label="Open strings" className="grid grid-cols-2 lg:flex">
           {strings.map((string, i) => (
             <button
               key={string.note}
@@ -335,11 +324,19 @@ export function BassGuitar() {
                 play(i, 0)
               }}
               aria-label={`Play the open ${string.note} string`}
-              className="grid size-11 touch-manipulation place-items-center rounded-full border border-line font-display text-lg font-semibold transition-colors hover:border-accent hover:text-accent"
+              className="grid size-10 touch-manipulation place-items-center rounded-full font-display text-base font-bold [font-stretch:125%] transition-colors hover:bg-raised hover:text-accent"
             >
               {string.note}
             </button>
           ))}
+        </span>
+        <span className="text-xs text-muted">
+          <span className="pointer-coarse:hidden">
+            Click the neck to play a note, or drag across the strings to strum.
+          </span>
+          <span className="pointer-fine:hidden">
+            Tap the neck to play a note, or swipe across the strings to strum.
+          </span>
         </span>
       </figcaption>
     </figure>

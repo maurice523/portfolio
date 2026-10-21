@@ -34,7 +34,6 @@ type ThemeRow = {
   name: string
   scheme: Theme['scheme']
   colors: string
-  is_public: number
   is_default: number
 }
 
@@ -84,16 +83,9 @@ export function collectionStatements(key: CollectionKey, list: readonly unknown[
     }
     const t = item as Theme
     return {
-      sql: 'INSERT INTO themes (id, name, scheme, colors, is_public, is_default, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      params: [
-        t.id,
-        t.name,
-        t.scheme,
-        JSON.stringify(t.colors),
-        t.isPublic ? 1 : 0,
-        t.isDefault ? 1 : 0,
-        order,
-      ],
+      // (The table's is_public column is left over from when visitors could switch themes)
+      sql: 'INSERT INTO themes (id, name, scheme, colors, is_default, sort_order) VALUES (?, ?, ?, ?, ?, ?)',
+      params: [t.id, t.name, t.scheme, JSON.stringify(t.colors), t.isDefault ? 1 : 0, order],
     }
   })
   return [{ sql: `DELETE FROM ${key}`, params: [] }, ...inserts]
@@ -151,7 +143,6 @@ export async function loadContent(db: D1Database): Promise<Content> {
       name: row.name,
       scheme: row.scheme,
       colors: JSON.parse(row.colors),
-      isPublic: row.is_public === 1,
       isDefault: row.is_default === 1,
     })),
   }

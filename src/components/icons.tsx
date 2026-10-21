@@ -36,52 +36,19 @@ export function LinkedInIcon({ className = 'size-5' }: IconProps) {
   )
 }
 
-export function MailIcon({ className = 'size-5' }: IconProps) {
+export function ArrowLeftIcon({ className = 'size-5' }: IconProps) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
       className={className}
     >
-      <rect x="2" y="4" width="20" height="16" rx="2" />
-      <path d="m22 7-10 6L2 7" />
-    </svg>
-  )
-}
-
-export function MenuIcon({ className = 'size-5' }: IconProps) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      aria-hidden="true"
-      className={className}
-    >
-      <path d="M4 7h16M4 12h16M4 17h16" />
-    </svg>
-  )
-}
-
-export function CloseIcon({ className = 'size-5' }: IconProps) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      aria-hidden="true"
-      className={className}
-    >
-      <path d="M6 6l12 12M18 6 6 18" />
+      <path d="M20 12H4M10 6l-6 6 6 6" />
     </svg>
   )
 }

@@ -6,8 +6,8 @@ type SectionHeadingProps = {
 
 export function SectionHeading({ title, intro }: SectionHeadingProps) {
   return (
-    <div className="mb-8 max-w-2xl md:mb-12">
-      <h2 className="text-4xl leading-none font-bold tracking-[-0.03em] [font-stretch:82%] md:text-6xl">
+    <div className="mb-8 max-w-2xl md:mb-10">
+      <h2 className="text-3xl leading-none font-black uppercase [font-stretch:125%] md:text-4xl">
         {title}
       </h2>
       {intro && <p className="mt-4 text-lg text-pretty text-muted">{intro}</p>}

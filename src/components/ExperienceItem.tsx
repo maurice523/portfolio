@@ -13,7 +13,7 @@ export function ExperienceItem({ item }: { item: Experience }) {
           aria-hidden="true"
           className="absolute top-2 left-0 size-3 -translate-x-[6.5px] rounded-full border-2 border-accent bg-bg"
         />
-        <h3 className="text-2xl leading-tight font-semibold tracking-tight [font-stretch:88%]">
+        <h3 className="text-2xl leading-tight font-bold tracking-tight [font-stretch:112%]">
           {item.role}
         </h3>
         <p className="mt-1 font-medium text-accent">{item.company}</p>

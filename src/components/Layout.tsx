@@ -1,25 +1,21 @@
 import { MotionConfig } from 'motion/react'
 import { Outlet } from 'react-router'
 import { useFavicon } from '@/content/useFavicon'
-import { Footer } from './Footer'
-import { NavBar } from './NavBar'
+import { PageTransitions } from './PageTransition'
 import { ScrollManager } from './ScrollManager'
 
-// Shared frame for every page. <Outlet /> is where the current page renders.
+// Shared frame for every page. <Outlet /> is where the current page renders; the home page
+// fills the screen on its own, and the others bring their header and footer (PageFrame).
 export function Layout() {
   useFavicon('site')
 
   return (
     // reducedMotion="user": Motion animations skip movement when the visitor prefers reduced motion
     <MotionConfig reducedMotion="user">
-      <div className="flex min-h-dvh flex-col">
+      <PageTransitions>
         <ScrollManager />
-        <NavBar />
-        <div className="flex-1">
-          <Outlet />
-        </div>
-        <Footer />
-      </div>
+        <Outlet />
+      </PageTransitions>
     </MotionConfig>
   )
 }

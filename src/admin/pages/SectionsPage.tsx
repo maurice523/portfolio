@@ -9,7 +9,7 @@ const sectionNames: Record<SectionId, string> = {
   projects: 'Projects',
   about: 'About',
   experience: 'Experience',
-  skills: 'Skills',
+  skills: 'Skills (part of the About page)',
   contact: 'Contact',
 }
 
@@ -25,7 +25,7 @@ export function SectionsPage() {
   return (
     <EditorPage
       title="Section titles"
-      description="Headings and intros for each part of the home page, and their labels in the top menu."
+      description="Each page’s name in the home page menu (the big words next to the bass), which is also the page’s heading, plus its browser tab title and intro."
       editor={editor}
     >
       {(Object.keys(sectionNames) as SectionId[]).map((id) => {
@@ -34,13 +34,21 @@ export function SectionsPage() {
           setDraft({ ...draft, [id]: { ...section, ...patch } })
         return (
           <Panel key={id} title={sectionNames[id]}>
+            {/* Skills has no page of its own, so nothing to put in the menus */}
+            {id !== 'skills' && (
+              <TextInput
+                label="Menu label"
+                hint="Also the page’s heading. Leave empty to leave this page off the home page menu."
+                value={section.navLabel}
+                onChange={(navLabel) => set({ navLabel })}
+              />
+            )}
             <TextInput
-              label="Menu label"
-              hint="Leave empty to leave this section out of the top menu."
-              value={section.navLabel}
-              onChange={(navLabel) => set({ navLabel })}
+              label="Title"
+              hint={id === 'skills' ? undefined : 'Shown in the browser tab.'}
+              value={section.title}
+              onChange={(title) => set({ title })}
             />
-            <TextInput label="Title" value={section.title} onChange={(title) => set({ title })} />
             <TextArea
               label="Intro"
               rows={2}

@@ -1,8 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
-// Display face for headings; the width axis lets the hero set it condensed
-import '@fontsource-variable/bricolage-grotesque/wdth.css'
+// Display face for headings. Its width axis runs from condensed to extra wide; the big
+// menu words and page titles use the widest, heaviest cut
+import '@fontsource-variable/archivo/wdth.css'
 import '@fontsource/ibm-plex-sans/400.css'
 import '@fontsource/ibm-plex-sans/500.css'
 import '@fontsource/ibm-plex-sans/600.css'

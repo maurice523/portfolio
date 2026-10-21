@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { CONTENT_ELEMENT_ID, type Content } from '@/shared/schema'
-import { getDefaultTheme, themesCss } from '@/shared/theme'
+import { themesCss } from '@/shared/theme'
 import { ContentContext } from './context'
 
 // The Worker puts the content into every page (see worker/inject.ts), so it is usually
@@ -25,14 +25,6 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
       .then(setContent)
       .catch(() => setFailed(true))
-  }, [content])
-
-  // Without the Worker's boot script nobody has picked a theme yet, so use the default.
-  useEffect(() => {
-    const fallback = content && getDefaultTheme(content.themes)
-    if (fallback && !document.documentElement.dataset.theme) {
-      document.documentElement.dataset.theme = fallback.id
-    }
   }, [content])
 
   if (!content) {

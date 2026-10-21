@@ -34,9 +34,7 @@ export const themeSchema = z.object({
   colors: z.object(
     Object.fromEntries(colorTokens.map((token) => [token, hex])) as Record<ColorToken, typeof hex>,
   ),
-  /** Visitors can pick this theme from the switcher in the nav. */
-  isPublic: z.boolean(),
-  /** The theme new visitors see. Exactly one theme is the default. */
+  /** The theme everyone sees. Exactly one theme is the default. */
   isDefault: z.boolean(),
 })
 export type Theme = z.infer<typeof themeSchema>
@@ -149,7 +147,7 @@ export const settingsSchemas = {
       }),
     ),
     currentlyBuilding: z.object({
-      /** Project slug to link to. Empty hides the card. */
+      /** Slug of the project to show. Empty hides the card. */
       slug: z.union([slug, z.literal('')]),
       blurb: text,
     }),
