@@ -15,7 +15,6 @@ import {
   StringList,
   TextArea,
   TextInput,
-  Toggle,
 } from '../fields'
 import { indexAfterMove, replaceAt } from '../list'
 import { SortableList } from '../SortableList'
@@ -57,7 +56,6 @@ export function ProjectsPage() {
       links: { github: '', live: '' },
       date: '',
       status: 'in-development',
-      featured: false,
     }
     setProjects([...projects, blank])
     setSelected(projects.length)
@@ -66,7 +64,7 @@ export function ProjectsPage() {
   return (
     <EditorPage
       title="Projects"
-      description="Featured projects show first and larger; the rest follow in this order."
+      description="Projects show on the site in this order. Drag to reorder."
       editor={editor}
     >
       <Panel
@@ -98,7 +96,6 @@ export function ProjectsPage() {
                 className="flex min-h-10 flex-1 items-center gap-2 text-left text-sm"
               >
                 <span className="font-medium">{item.title || 'Untitled'}</span>
-                {item.featured && <span className="text-xs text-accent">Featured</span>}
                 <span className="text-xs text-muted">{statusLabels[item.status]}</span>
               </button>
               <RemoveButton label={item.title} onClick={remove} />
@@ -178,12 +175,6 @@ function ProjectEditor({
             onChange={(status) => set({ status })}
           />
         </div>
-        <Toggle
-          label="Featured"
-          hint="Listed first and shown at half width on desktop."
-          checked={project.featured}
-          onChange={(featured) => set({ featured })}
-        />
       </Panel>
 
       <Panel title="Image & links">

@@ -14,12 +14,7 @@ export function SectionPage({ id }: { id: PageId }) {
   const { navLabel, title, intro } = content.settings.sections[id]
 
   const body: Record<PageId, ReactNode> = {
-    // Featured first; otherwise in the order set in /admin
-    projects: (
-      <ProjectGrid
-        projects={[...content.projects].sort((a, b) => Number(b.featured) - Number(a.featured))}
-      />
-    ),
+    projects: <ProjectGrid projects={content.projects} />,
     experience: <ExperienceSection />,
     about: (
       <>

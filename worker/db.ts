@@ -26,7 +26,6 @@ type ProjectRow = {
   live_url: string
   date: string
   status: Project['status']
-  featured: number
 }
 type ExperienceRow = { company: string; role: string; date: string; bullets: string }
 type ThemeRow = {
@@ -53,9 +52,10 @@ export function collectionStatements(key: CollectionKey, list: readonly unknown[
     if (key === 'projects') {
       const p = item as Project
       return {
+        // (The table's featured column is left over from when some projects were shown larger)
         sql: `INSERT INTO projects (slug, title, tagline, description, highlights, image, image_alt, tools,
-                github_url, live_url, date, status, featured, sort_order)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                github_url, live_url, date, status, sort_order)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         params: [
           p.slug,
           p.title,
@@ -69,7 +69,6 @@ export function collectionStatements(key: CollectionKey, list: readonly unknown[
           p.links.live,
           p.date,
           p.status,
-          p.featured ? 1 : 0,
           order,
         ],
       }
@@ -130,7 +129,6 @@ export async function loadContent(db: D1Database): Promise<Content> {
       links: { github: row.github_url, live: row.live_url },
       date: row.date,
       status: row.status,
-      featured: row.featured === 1,
     })),
     experience: (experienceResult.results as ExperienceRow[]).map((row) => ({
       company: row.company,

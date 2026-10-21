@@ -128,7 +128,6 @@ export const seed: Content = {
       links: { github: '', live: '' },
       date: 'Aug 2026 – Present',
       status: 'in-development',
-      featured: true,
     },
     {
       slug: 'order-test-data-generator',
@@ -155,7 +154,6 @@ export const seed: Content = {
       },
       date: 'Jun 2026 – Aug 2026',
       status: 'completed',
-      featured: true,
     },
     {
       slug: 'boston-trees',
@@ -177,7 +175,6 @@ export const seed: Content = {
       },
       date: 'Jan 2026',
       status: 'completed',
-      featured: false,
     },
     {
       slug: 'excel-io',
@@ -201,7 +198,6 @@ export const seed: Content = {
       },
       date: 'Nov 2025',
       status: 'completed',
-      featured: false,
     },
     {
       slug: 'portfolio',
@@ -223,7 +219,6 @@ export const seed: Content = {
       },
       date: 'Jul 2026 – Present',
       status: 'in-development',
-      featured: false,
     },
   ],
 

@@ -71,8 +71,6 @@ export const projectSchema = z.object({
   /** Display date, e.g. "Aug 2026 – Present". */
   date: text,
   status: z.enum(projectStatuses),
-  /** Featured projects are listed first and shown larger. */
-  featured: z.boolean(),
 })
 export type Project = z.infer<typeof projectSchema>
 

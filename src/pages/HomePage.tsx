@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { BassGuitar } from '@/components/BassGuitar'
+import { GitHubIcon, LinkedInIcon, MailIcon } from '@/components/icons'
 import { usePageExit } from '@/components/pageExit'
 import { WarpedMenu, type MenuEntrance } from '@/components/WarpedMenu'
 import { useContent } from '@/content/context'
@@ -9,8 +10,8 @@ import { usePages } from '@/content/pages'
 
 const ease = [0.16, 1, 0.3, 1] as const
 
-const textLink =
-  'inline-flex min-h-8 items-center font-medium decoration-accent decoration-2 underline-offset-4 hover:underline'
+const iconLink =
+  'grid size-11 place-items-center rounded-full border border-line transition-colors hover:border-accent hover:text-accent'
 
 // The intro (the bass rising, the menu dropping and swinging in) plays once per visit: on the
 // first load or a refresh. Coming back from a page plays the exit in reverse instead.
@@ -101,12 +102,11 @@ export function HomePage() {
           initial={intro ? { opacity: 0, y: 12 } : false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.05, duration: 0.8, ease }}
-          className="text-sm"
         >
-          <ul className="flex flex-col">
+          <ul className="flex gap-2">
             <li>
-              <a href={`mailto:${profile.email}`} className={textLink}>
-                Email
+              <a href={`mailto:${profile.email}`} aria-label="Email me" className={iconLink}>
+                <MailIcon />
               </a>
             </li>
             {profile.links.linkedin && (
@@ -115,9 +115,10 @@ export function HomePage() {
                   href={profile.links.linkedin}
                   target="_blank"
                   rel="noreferrer"
-                  className={textLink}
+                  aria-label="LinkedIn profile"
+                  className={iconLink}
                 >
-                  LinkedIn
+                  <LinkedInIcon />
                 </a>
               </li>
             )}
@@ -127,9 +128,10 @@ export function HomePage() {
                   href={profile.links.github}
                   target="_blank"
                   rel="noreferrer"
-                  className={textLink}
+                  aria-label="GitHub profile"
+                  className={iconLink}
                 >
-                  GitHub
+                  <GitHubIcon />
                 </a>
               </li>
             )}
