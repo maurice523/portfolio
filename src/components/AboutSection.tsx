@@ -5,7 +5,9 @@ import { useContent } from '@/content/context'
 import { OrbitingCircles } from './OrbitingCircles'
 import { Section } from './Section'
 
-const tile = 'relative overflow-hidden rounded-2xl border border-line bg-surface p-5 md:p-6'
+// Only the two interactive pieces get a surface of their own; the rest is plain text
+const stage = 'relative overflow-hidden rounded-3xl bg-surface'
+const column = 'border-t border-line pt-4'
 
 export function AboutSection() {
   const playground = useRef<HTMLDivElement>(null)
@@ -16,9 +18,9 @@ export function AboutSection() {
 
   return (
     <Section id="about" title={sections.about.title} intro={sections.about.intro}>
-      <div className="grid grid-cols-1 gap-4 md:auto-rows-[minmax(15rem,auto)] md:grid-cols-6">
+      <div className="grid grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-6">
         {/* Bio with photo */}
-        <div className={`${tile} md:col-span-4`}>
+        <div className="md:col-span-4">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
             <img
               src={profile.photo}
@@ -35,7 +37,7 @@ export function AboutSection() {
         </div>
 
         {/* Drag playground */}
-        <div className={`${tile} min-h-[26rem] md:col-span-2 md:row-span-2 md:min-h-80`}>
+        <div className={`${stage} min-h-[26rem] p-5 md:col-span-2 md:row-span-2 md:min-h-80`}>
           <p className="text-sm font-medium text-muted">{about.playgroundLabel}</p>
           <ul className="sr-only">
             {interests.map((chip) => (
@@ -77,7 +79,7 @@ export function AboutSection() {
         </div>
 
         {/* Education (wider when there's no "Currently building" card next to it) */}
-        <div className={`${tile} ${building ? 'md:col-span-2' : 'md:col-span-4'}`}>
+        <div className={`${column} ${building ? 'md:col-span-2' : 'md:col-span-4'}`}>
           <p className="text-sm font-medium text-muted">Education</p>
           <p className="mt-2 text-lg font-semibold">{education.school}</p>
           <p className="mt-1 text-sm text-muted">{education.degree}</p>
@@ -92,35 +94,38 @@ export function AboutSection() {
         {building && (
           <Link
             to={`/projects/${building.slug}`}
-            className={`${tile} group flex flex-col justify-between gap-6 hover:border-accent/50 md:col-span-2`}
+            className={`${column} group flex flex-col gap-2 md:col-span-2`}
           >
             <p className="flex items-center gap-2 text-sm font-medium text-muted">
               <span className="size-2 animate-pulse rounded-full bg-amber motion-reduce:animate-none" />
               Currently building
             </p>
             <div>
-              <p className="text-2xl font-semibold group-hover:text-accent">{building.title}</p>
+              <p className="font-display text-3xl font-bold tracking-tight [font-stretch:85%] decoration-accent decoration-2 underline-offset-4 group-hover:underline">
+                {building.title}
+              </p>
               <p className="mt-1 text-sm text-muted">{about.currentlyBuilding.blurb}</p>
             </div>
-            <p></p>
           </Link>
         )}
 
         {/* Tech stack with orbiting logos */}
-        <div className={`${tile} grid gap-6 md:col-span-6 md:grid-cols-2 md:items-center`}>
+        <div className={`${column} grid gap-6 md:col-span-6 md:grid-cols-2 md:items-center`}>
           <div className="max-w-sm">
             <p className="text-lg font-semibold">{techStack.title}</p>
             <p className="mt-2 text-muted">{techStack.text}</p>
           </div>
-          <div className="relative mx-auto aspect-square w-full max-w-[20rem] max-sm:scale-[0.8]">
-            <OrbitingCircles icons={techStack.innerRing} radius={70} duration={24} size={40} />
-            <OrbitingCircles
-              icons={techStack.outerRing}
-              radius={140}
-              duration={36}
-              size={40}
-              reverse
-            />
+          <div className={`${stage} mx-auto aspect-square w-full max-w-[22rem]`}>
+            <div className="absolute inset-0 max-sm:scale-[0.8]">
+              <OrbitingCircles icons={techStack.innerRing} radius={70} duration={24} size={40} />
+              <OrbitingCircles
+                icons={techStack.outerRing}
+                radius={140}
+                duration={36}
+                size={40}
+                reverse
+              />
+            </div>
           </div>
         </div>
       </div>

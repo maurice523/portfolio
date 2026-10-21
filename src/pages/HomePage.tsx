@@ -17,12 +17,7 @@ export function HomePage() {
     <main>
       <Hero />
 
-      <Section
-        id="projects"
-        title={copy.title}
-        eyebrow={`${projects.length} projects · featured first`}
-        intro={copy.intro}
-      >
+      <Section id="projects" title={copy.title} intro={copy.intro}>
         <ProjectGrid projects={projects} />
       </Section>
 

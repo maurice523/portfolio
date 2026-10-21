@@ -34,9 +34,11 @@ export function ProjectPage() {
           <header className="mt-4 max-w-3xl">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
               <StatusBadge status={status} />
-              <span className="font-mono text-sm text-muted tabular-nums">{date}</span>
+              <span className="text-sm text-muted tabular-nums">{date}</span>
             </div>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">{title}</h1>
+            <h1 className="mt-3 text-5xl leading-[0.95] font-bold tracking-[-0.03em] [font-stretch:82%] md:text-6xl">
+              {title}
+            </h1>
             <p className="mt-3 text-lg text-muted">{tagline}</p>
 
             {(links.github || links.live) && (
@@ -46,7 +48,7 @@ export function ProjectPage() {
                     href={links.live}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 font-medium text-bg hover:bg-accent/90"
+                    className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 font-medium text-bg transition-colors hover:bg-fg"
                   >
                     <ExternalLinkIcon className="size-4" /> Visit live site
                   </a>
@@ -56,7 +58,7 @@ export function ProjectPage() {
                     href={links.github}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2.5 font-medium hover:border-muted"
+                    className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 font-medium transition-colors hover:border-fg"
                   >
                     <GitHubIcon className="size-4" /> View code
                   </a>

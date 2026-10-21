@@ -1,3 +1,4 @@
+import { MotionConfig } from 'motion/react'
 import { Outlet } from 'react-router'
 import { useFavicon } from '@/content/useFavicon'
 import { Footer } from './Footer'
@@ -9,13 +10,16 @@ export function Layout() {
   useFavicon('site')
 
   return (
-    <div className="flex min-h-dvh flex-col">
-      <ScrollManager />
-      <NavBar />
-      <div className="flex-1">
-        <Outlet />
+    // reducedMotion="user": Motion animations skip movement when the visitor prefers reduced motion
+    <MotionConfig reducedMotion="user">
+      <div className="flex min-h-dvh flex-col">
+        <ScrollManager />
+        <NavBar />
+        <div className="flex-1">
+          <Outlet />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </MotionConfig>
   )
 }

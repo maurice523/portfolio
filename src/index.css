@@ -13,6 +13,7 @@
   --color-green: #6fcf8f;
 
   --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'IBM Plex Sans', ui-sans-serif, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   @keyframes orbit {
@@ -53,6 +54,7 @@
   h1,
   h2,
   h3 {
+    @apply font-display;
     text-wrap: balance;
   }
 

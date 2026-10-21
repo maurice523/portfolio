@@ -1,17 +1,16 @@
 type SectionHeadingProps = {
   title: string
-  /** Small line above the title with a useful fact, e.g. "5 projects · featured first". */
-  eyebrow?: string
   /** Optional sentence under the title. */
   intro?: string
 }
 
-export function SectionHeading({ title, eyebrow, intro }: SectionHeadingProps) {
+export function SectionHeading({ title, intro }: SectionHeadingProps) {
   return (
-    <div className="mb-6 max-w-2xl md:mb-8">
-      {eyebrow && <p className="mb-1.5 font-mono text-xs text-accent md:text-sm">{eyebrow}</p>}
-      <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">{title}</h2>
-      {intro && <p className="mt-2 text-muted">{intro}</p>}
+    <div className="mb-8 max-w-2xl md:mb-12">
+      <h2 className="text-4xl leading-none font-bold tracking-[-0.03em] [font-stretch:82%] md:text-6xl">
+        {title}
+      </h2>
+      {intro && <p className="mt-4 text-lg text-pretty text-muted">{intro}</p>}
     </div>
   )
 }

@@ -1,18 +1,12 @@
-import clsx from 'clsx'
 import type { Project } from '@/shared/schema'
 import { ProjectCard } from './ProjectCard'
 
-// Phones: 1 column. Tablets: 2 columns.
-// Desktops: a 6-column grid where featured projects take half the row (span 3)
-// and the rest take a third (span 2), so 2 featured + 3 others fill two neat rows.
+// One project per row, separated by rules, in the order from /admin (featured first).
 export function ProjectGrid({ projects }: { projects: Project[] }) {
   return (
-    <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-6">
+    <ul className="border-b border-line">
       {projects.map((project) => (
-        <li
-          key={project.slug}
-          className={clsx(project.featured ? 'lg:col-span-3' : 'lg:col-span-2')}
-        >
+        <li key={project.slug} className="border-t border-line">
           <ProjectCard project={project} />
         </li>
       ))}

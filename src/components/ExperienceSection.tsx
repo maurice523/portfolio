@@ -7,13 +7,8 @@ export function ExperienceSection() {
   const copy = settings.sections.experience
 
   return (
-    <Section
-      id="experience"
-      title={copy.title}
-      intro={copy.intro}
-      eyebrow={`${experience.length} roles · newest first`}
-    >
-      <ol className="flex flex-col gap-8 border-l border-line">
+    <Section id="experience" title={copy.title} intro={copy.intro}>
+      <ol className="flex flex-col">
         {experience.map((item) => (
           <ExperienceItem key={`${item.company}-${item.role}`} item={item} />
         ))}
