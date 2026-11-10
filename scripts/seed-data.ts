@@ -51,15 +51,28 @@ export const seed: Content = {
         { text: 'Ecuador', color: '#7aa2ff', top: 80, left: 4, rotate: 6 },
         { text: 'Boston', color: '#34f33e', top: 82, left: 62, rotate: -9 },
       ],
-      currentlyBuilding: {
-        slug: 'move',
-        blurb: 'A ridesharing app for students, which I’m co-founding. See the project →',
-      },
       techStack: {
         title: 'Tech stack',
         text: 'The languages and tools I reach for most, from data work in Python and SQL to web apps in React.',
         innerRing: logos(['python', 'typescript', 'react', 'java', 'postgresql']),
         outerRing: logos(['javascript', 'fastapi', 'supabase', 'git', 'tailwindcss', 'jupyter']),
+      },
+    },
+    currentlyWorking: {
+      mode: 'project',
+      slug: 'move',
+      blurb: 'A ridesharing app for students, which I’m co-founding.',
+      custom: {
+        title: '',
+        tagline: '',
+        description: '',
+        highlights: [],
+        image: '',
+        imageAlt: '',
+        tools: [],
+        links: { github: '', live: '' },
+        date: '',
+        status: 'in-development',
       },
     },
     education: {
@@ -114,6 +127,7 @@ export const seed: Content = {
     {
       slug: 'move',
       title: 'Move',
+      section: 'Software',
       tagline: 'Student ridesharing that connects verified student drivers with student commuters.',
       description:
         'A full-stack web and mobile ridesharing platform I am co-founding. Students sign up with their university (.edu) email, which creates trust-based, community-driven access to shared rides.',
@@ -132,6 +146,7 @@ export const seed: Content = {
     {
       slug: 'order-test-data-generator',
       title: 'ERP Test Data Generator',
+      section: 'Software',
       tagline:
         'AI-powered test data integrated into an ERP: from 12 orders an hour to 1,000+ in minutes.',
       description:
@@ -158,6 +173,7 @@ export const seed: Content = {
     {
       slug: 'boston-trees',
       title: 'Boston Trees',
+      section: 'Data analysis',
       tagline: 'Interactive map of the trees planted across Boston, with user-controlled filters.',
       description:
         'A data visualization app that maps trees planted across Boston. Users control the filters and the map to explore the data. Frontend and backend are built entirely in Python with Streamlit.',
@@ -179,6 +195,7 @@ export const seed: Content = {
     {
       slug: 'excel-io',
       title: 'Excel-io',
+      section: 'Software',
       tagline:
         'A spreadsheet built from scratch in Java, with its own formula language. Playable in your browser.',
       description:
@@ -202,6 +219,7 @@ export const seed: Content = {
     {
       slug: 'portfolio',
       title: 'This Portfolio',
+      section: 'Software',
       tagline: 'The site you’re on! A portfolio built to grow, designed for web and mobile.',
       description:
         'My personal portfolio for introductions and project display. Everything on it — projects, text and color themes — is edited from an admin dashboard and stored in Cloudflare D1, so updates go live without a redeploy. It is responsive from phone to desktop and runs on Cloudflare Workers.',

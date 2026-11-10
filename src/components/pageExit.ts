@@ -1,6 +1,7 @@
 import type { MotionProps } from 'motion/react'
 import { createContext, use } from 'react'
 import { useLocation } from 'react-router'
+import { isBloomTrip } from '@/content/currentProject'
 
 type PageExit = {
   /** Where the current page is headed while it animates out; null otherwise. */
@@ -39,8 +40,10 @@ export function useSurroundings(travels = false): MotionProps {
   // fades in as the travellers land. Back from a level down: it's already in place. Otherwise
   // (a direct visit, the back button): everything fades up.
   const deeper = arrivedFrom === '/' || (!!arrivedFrom && pathname.startsWith(`${arrivedFrom}/`))
-  const entrance = !arrivedFrom ? 'fade' : deeper ? 'after-landing' : 'none'
-  const leaving = leavingTo !== null
+  // The swelling dot moves whole pages, so nothing fades in or out separately.
+  const bloom = isBloomTrip(arrivedFrom, pathname)
+  const entrance = bloom ? 'none' : !arrivedFrom ? 'fade' : deeper ? 'after-landing' : 'none'
+  const leaving = leavingTo !== null && !isBloomTrip(pathname, leavingTo)
 
   return {
     initial: entrance === 'none' ? false : { opacity: 0, y: entrance === 'fade' ? 16 : 0 },

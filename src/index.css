@@ -86,3 +86,95 @@
   animation-duration: 0.85s;
   animation-timing-function: cubic-bezier(0.65, 0, 0.25, 1);
 }
+
+/* Between the home page and the "Currently working on" page (data-transition is set in
+   PageTransition.tsx). The accent color is in both directions. Going in, the button's dot has
+   swelled into a screen of it (an overlay on the home page), so the old page is a solid color and
+   the default crossfade is the new page fading in from it. Coming back, the page fades out to a
+   screen of it (the overlay is on the new home page from the start), which then shrinks into the
+   dot and uncovers the page (bloom-uncover; the 0.45s delay waits for the fade). */
+:root[data-transition='bloom-in'],
+:root[data-transition='bloom-out'] {
+  &::view-transition-old(root),
+  &::view-transition-new(root) {
+    animation-timing-function: ease-in-out;
+  }
+}
+
+:root[data-transition='bloom-in'] {
+  &::view-transition-old(root),
+  &::view-transition-new(root) {
+    animation-duration: 0.8s;
+  }
+}
+
+:root[data-transition='bloom-out'] {
+  &::view-transition-old(root),
+  &::view-transition-new(root) {
+    animation-duration: 0.45s;
+  }
+}
+
+@keyframes bloom-uncover {
+  from {
+    clip-path: circle(150vmax at var(--bloom-x, 85%) var(--bloom-y, 65%));
+  }
+  to {
+    clip-path: circle(var(--bloom-dot, 0.3rem) at var(--bloom-x, 85%) var(--bloom-y, 65%));
+  }
+}
+
+/* The "Currently Working On" dot: fades all the way out and back, like a light blinking. */
+@keyframes dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* The button's flourish, repeating every 8 seconds: for the first second or so a hop (twice), a
+   ring spreading out from the pill (twice) and the dot flaring up, then nothing until the next
+   round. (translate and scale are their own properties, so they don't fight the other
+   transforms on the button.) */
+@keyframes cta-hop {
+  0%,
+  12%,
+  100% {
+    translate: 0 0;
+  }
+  3% {
+    translate: 0 -0.7em;
+  }
+  6% {
+    translate: 0 0;
+  }
+  9% {
+    translate: 0 -0.35em;
+  }
+}
+
+@keyframes cta-ring {
+  0%,
+  10% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 70%, transparent);
+  }
+  9%,
+  19%,
+  100% {
+    box-shadow: 0 0 0 1em color-mix(in srgb, var(--color-accent) 0%, transparent);
+  }
+}
+
+@keyframes cta-flare {
+  0%,
+  14%,
+  100% {
+    scale: 1;
+  }
+  6% {
+    scale: 2.6;
+  }
+}

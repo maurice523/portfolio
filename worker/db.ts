@@ -26,6 +26,7 @@ type ProjectRow = {
   live_url: string
   date: string
   status: Project['status']
+  section: string
 }
 type ExperienceRow = { company: string; role: string; date: string; bullets: string }
 type ThemeRow = {
@@ -54,8 +55,8 @@ export function collectionStatements(key: CollectionKey, list: readonly unknown[
       return {
         // (The table's featured column is left over from when some projects were shown larger)
         sql: `INSERT INTO projects (slug, title, tagline, description, highlights, image, image_alt, tools,
-                github_url, live_url, date, status, sort_order)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                github_url, live_url, date, status, section, sort_order)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         params: [
           p.slug,
           p.title,
@@ -69,6 +70,7 @@ export function collectionStatements(key: CollectionKey, list: readonly unknown[
           p.links.live,
           p.date,
           p.status,
+          p.section,
           order,
         ],
       }
@@ -120,6 +122,7 @@ export async function loadContent(db: D1Database): Promise<Content> {
     projects: (projectsResult.results as ProjectRow[]).map((row) => ({
       slug: row.slug,
       title: row.title,
+      section: row.section,
       tagline: row.tagline,
       description: row.description,
       highlights: JSON.parse(row.highlights),

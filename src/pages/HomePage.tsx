@@ -1,11 +1,13 @@
-import { motion } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { motion, useReducedMotion } from 'motion/react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { BassGuitar } from '@/components/BassGuitar'
 import { GitHubIcon, LinkedInIcon, MailIcon } from '@/components/icons'
 import { usePageExit } from '@/components/pageExit'
+import { PageLink } from '@/components/PageTransition'
 import { WarpedMenu, type MenuEntrance } from '@/components/WarpedMenu'
 import { useContent } from '@/content/context'
+import { CURRENT_PROJECT_PATH, useCurrentWork } from '@/content/currentProject'
 import { usePages } from '@/content/pages'
 
 const ease = [0.16, 1, 0.3, 1] as const
@@ -22,8 +24,13 @@ let introPlayed = false
 export function HomePage() {
   const { profile, hero } = useContent().settings
   const { leavingTo, arrivedFrom, landing } = usePageExit()
-  const leaving = leavingTo !== null
+  // Opening "Currently working on" fills the screen with a swelling dot instead (see
+  // index.css), so nothing here clears away, and coming back from it nothing needs to land
+  const leaving = leavingTo !== null && leavingTo !== CURRENT_PROJECT_PATH
+  const fromBloom = arrivedFrom === CURRENT_PROJECT_PATH
+  const work = useCurrentWork()
   const [entrance] = useState<MenuEntrance>(() => {
+    if (fromBloom) return 'none'
     if (arrivedFrom) return 'return'
     return introPlayed ? 'none' : 'intro'
   })
@@ -32,12 +39,54 @@ export function HomePage() {
   const waiting = entrance === 'return' && landing
   const hidden = leaving || waiting
   const [bubbleSettled, setBubbleSettled] = useState(false)
+  // The button's dot swells into a full-screen circle of the accent color when it's clicked
+  // (`bloom`: where it starts and how big it ends up). Coming back, the screen starts out full of
+  // that color and shrinks into the dot, uncovering the page (`uncovering`).
+  const dot = useRef<HTMLSpanElement>(null)
+  const [bloom, setBloom] = useState<{ x: number; y: number; radius: number; from: number } | null>(
+    null,
+  )
+  const reduceMotion = useReducedMotion()
+  const [uncovering, setUncovering] = useState(fromBloom && !!work && !reduceMotion)
   useOldSectionLinks()
+
+  // Seconds until the button's flourish first plays (after the button has appeared). It then
+  // repeats every few seconds (see cta-hop in index.css).
+  const flourishAt = intro ? 3.6 : 1.8
 
   useEffect(() => {
     const timer = setTimeout(() => setBubbleSettled(true), 2600)
     return () => clearTimeout(timer)
   }, [])
+
+  // Tells index.css where the dot is, for the circle that shrinks into it. Returns its box.
+  function markDot() {
+    const box = dot.current?.getBoundingClientRect()
+    if (!box) return null
+    const root = document.documentElement.style
+    root.setProperty('--bloom-x', `${box.left + box.width / 2}px`)
+    root.setProperty('--bloom-y', `${box.top + box.height / 2}px`)
+    root.setProperty('--bloom-dot', `${box.width / 2}px`)
+    return box
+  }
+
+  function startBloom() {
+    const box = markDot()
+    if (!box) return
+    const x = box.left + box.width / 2
+    const y = box.top + box.height / 2
+    // Far enough to reach the farthest corner of the screen
+    const radius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y),
+    )
+    setBloom({ x, y, radius, from: box.width / (2 * radius) })
+  }
+
+  // Coming back: the circle needs to know where the dot is before it first paints
+  useLayoutEffect(() => {
+    if (uncovering) markDot()
+  }, [uncovering])
 
   useEffect(() => {
     introPlayed = true
@@ -68,7 +117,7 @@ export function HomePage() {
         {/* Cartoon speech bubble by the neck: a hard offset shadow plus a soft one behind it
             lift it off the background. It sits outside the clipping box so it can overhang. */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
+          initial={fromBloom ? false : { opacity: 0, scale: 0.6, rotate: -8 }}
           animate={{ opacity: hidden ? 0 : 1, scale: hidden ? 0.6 : 1, rotate: -3 }}
           transition={{
             // The entrance delay only applies on the way in; after that the bubble settles back
@@ -105,7 +154,48 @@ export function HomePage() {
         </motion.div>
       </div>
 
-      <WarpedMenu entrance={entrance} className="min-h-0" />
+      <WarpedMenu
+        entrance={entrance}
+        className="min-h-0"
+        below={
+          // Under the menu: opens what's set at /admin → Currently working, with a dot that
+          // swells into the page. Halfway between the last word and the introduction below (the
+          // translate is half the gap between the rows), and a little left of the words' edge.
+          work && (
+            <motion.div
+              initial={fromBloom ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: hidden ? 0 : 1, y: hidden ? 12 : 0 }}
+              transition={{
+                delay: hidden || bubbleSettled ? 0 : intro ? 2 : 0.8,
+                duration: 0.7,
+                ease,
+              }}
+              className="row-start-3 mr-[7vw] flex translate-y-4 items-center justify-end lg:translate-y-2"
+            >
+              {/* The same type as the page titles and the menu words, small, in an outlined pill.
+                  Every few seconds it hops, with a ring spreading out from it and the dot
+                  flaring, to show it can be clicked. */}
+              <PageLink
+                to={CURRENT_PROJECT_PATH}
+                onClick={startBloom}
+                style={{ animationDelay: `${flourishAt}s, ${flourishAt}s` }}
+                className="relative flex animate-[cta-hop_8s_ease-out_infinite,cta-ring_8s_ease-out_infinite] items-center gap-[0.55em] rounded-full border-[1.5px] border-accent px-[0.9em] py-[0.65em] font-display text-[0.68rem] leading-none font-black tracking-[0.01em] text-accent uppercase [font-stretch:125%] [-webkit-text-stroke:max(0.5px,0.02em)_var(--color-accent)] after:absolute after:-inset-2.5 after:content-[''] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent active:scale-[0.97] motion-reduce:animate-none sm:text-[clamp(0.8rem,1.4vw,1.05rem)]"
+              >
+                <span
+                  ref={dot}
+                  aria-hidden="true"
+                  style={{ animationDelay: `0s, ${flourishAt}s` }}
+                  className="size-[0.45em] shrink-0 animate-[dot-pulse_1.6s_ease-in-out_infinite,cta-flare_8s_ease-out_infinite] rounded-full bg-accent motion-reduce:animate-none"
+                />
+                {/* Two lines on phones, where the column is narrow */}
+                <span className="whitespace-nowrap max-sm:leading-[1.15]">
+                  Currently <span className="max-sm:block">Working On</span>
+                </span>
+              </PageLink>
+            </motion.div>
+          )
+        }
+      />
 
       <motion.div
         initial={entrance === 'return' ? { opacity: 0 } : false}
@@ -185,6 +275,31 @@ export function HomePage() {
           </ul>
         </motion.div>
       </motion.div>
+
+      {/* The swelling dot: a circle of the accent color, centered on the dot, that grows until
+          it covers the screen. Then the page changes and the new page fades in from it. */}
+      {uncovering && (
+        <div
+          aria-hidden="true"
+          onAnimationEnd={() => setUncovering(false)}
+          className="pointer-events-none fixed inset-0 z-50 animate-[bloom-uncover_0.75s_cubic-bezier(0.65,0,0.35,1)_0.45s_both] bg-accent"
+        />
+      )}
+      {bloom && leavingTo === CURRENT_PROJECT_PATH && (
+        <motion.div
+          aria-hidden="true"
+          initial={{ scale: bloom.from }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.65, ease: [0.65, 0, 0.35, 1] }}
+          style={{
+            left: bloom.x - bloom.radius,
+            top: bloom.y - bloom.radius,
+            width: bloom.radius * 2,
+            height: bloom.radius * 2,
+          }}
+          className="pointer-events-none fixed z-50 rounded-full bg-accent"
+        />
+      )}
     </main>
   )
 }

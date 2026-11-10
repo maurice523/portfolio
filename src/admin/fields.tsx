@@ -76,6 +76,7 @@ export function TextInput({
   hint,
   placeholder,
   type = 'text',
+  suggestions,
 }: {
   label: string
   value: string
@@ -83,8 +84,11 @@ export function TextInput({
   hint?: string
   placeholder?: string
   type?: 'text' | 'email' | 'url'
+  /** Values offered as you type (you can still enter anything else). */
+  suggestions?: string[]
 }) {
   const id = useId()
+  const listId = `${id}-suggestions`
   return (
     <Field label={label} hint={hint} htmlFor={id}>
       <input
@@ -92,9 +96,17 @@ export function TextInput({
         type={type}
         value={value}
         placeholder={placeholder}
+        list={suggestions ? listId : undefined}
         onChange={(event) => onChange(event.target.value)}
         className={inputClass}
       />
+      {suggestions && (
+        <datalist id={listId}>
+          {suggestions.map((suggestion) => (
+            <option key={suggestion} value={suggestion} />
+          ))}
+        </datalist>
+      )}
     </Field>
   )
 }

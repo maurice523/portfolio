@@ -7,9 +7,10 @@ import {
   useTransform,
   type Variants,
 } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { useContent } from '@/content/context'
 import { usePages, type PageId } from '@/content/pages'
+import { CURRENT_PROJECT_PATH } from '@/content/currentProject'
 import { PageLink } from './PageTransition'
 import { usePageExit } from './pageExit'
 
@@ -92,13 +93,19 @@ function useNotes(): Record<PageId, string> {
 export function WarpedMenu({
   entrance,
   className,
+  below,
 }: {
   entrance: MenuEntrance
   className?: string
+  /** Something to put under the words, halfway between them and the bottom of the menu's box. */
+  below?: ReactNode
 }) {
   const pages = usePages()
   const notes = useNotes()
-  const { leavingTo, arrivedFrom, landing } = usePageExit()
+  const exit = usePageExit()
+  const { arrivedFrom, landing } = exit
+  // The words stay put when the home page tilts back under the "Currently working on" page
+  const leavingTo = exit.leavingTo === CURRENT_PROJECT_PATH ? null : exit.leavingTo
   const reduceMotion = useReducedMotion()
   const [entered, setEntered] = useState(entrance === 'none')
   const [hovered, setHovered] = useState<number | null>(null)
@@ -144,7 +151,9 @@ export function WarpedMenu({
       aria-label="Pages"
       style={{ perspectiveOrigin }}
       className={clsx(
-        'flex items-center justify-end [perspective:250vw] sm:[perspective:100vw]',
+        // Three rows: the words sit in the middle one, so they stay centered in the box, and
+        // whatever goes under them is centered in the space left below
+        'grid grid-cols-[minmax(0,1fr)] grid-rows-[1fr_auto_1fr] [perspective:250vw] sm:[perspective:100vw]',
         className,
       )}
     >
@@ -154,7 +163,7 @@ export function WarpedMenu({
         animate="enter"
         // Only the words take the pointer: the flat list items would sit in front of them in
         // 3D and catch clicks first
-        className="pointer-events-none w-full text-right [transform-style:preserve-3d]"
+        className="pointer-events-none row-start-2 w-full text-right [transform-style:preserve-3d]"
       >
         {pages.map((page, i) => {
           const travelling =
@@ -220,6 +229,7 @@ export function WarpedMenu({
           )
         })}
       </motion.ul>
+      {below}
     </motion.nav>
   )
 }

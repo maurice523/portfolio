@@ -17,6 +17,11 @@ type PageFrameProps = {
    * page and here, and the back arrow leads to the projects page.
    */
   kind?: 'section' | 'project'
+  /**
+   * Where the back arrow leads, for a page that sits below another one (e.g. the page under
+   * Contact). Its title then stays put and fades with the rest of the page.
+   */
+  back?: { to: string; label: string }
   /** False when the content holds travellers of its own and fades its other parts itself. */
   fadeContent?: boolean
   children: ReactNode
@@ -29,17 +34,21 @@ export function PageFrame({
   title,
   intro,
   kind = 'section',
+  back: customBack,
   fadeContent = true,
   children,
 }: PageFrameProps) {
   const back =
-    kind === 'project'
+    customBack ??
+    (kind === 'project'
       ? { to: '/projects', label: 'Back to projects' }
-      : { to: '/', label: 'Back to home' }
+      : { to: '/', label: 'Back to home' })
   const { leavingTo, arrivedFrom, landing } = usePageExit()
   // The title travels to the page the back arrow leads to, and back from it (see
-  // PageTransition.tsx). Everything else makes way for it.
-  const titleTravels = leavingTo === back.to || (arrivedFrom === back.to && landing)
+  // PageTransition.tsx). Everything else makes way for it. (A page with its own back arrow has
+  // no matching title on the page it leads to, so its title doesn't travel.)
+  const titleTravels =
+    !customBack && (leavingTo === back.to || (arrivedFrom === back.to && landing))
   const surroundings = useSurroundings()
   const titleMotion = useSurroundings(titleTravels)
   const titleBox = useRef<HTMLSpanElement>(null)

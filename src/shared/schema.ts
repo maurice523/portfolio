@@ -58,6 +58,8 @@ export const projectSchema = z.object({
   /** Used in the URL: /projects/<slug>. */
   slug,
   title: text.min(1),
+  /** Heading the project is listed under on the projects page, e.g. "Machine learning". */
+  section: text,
   /** One line shown on the card. */
   tagline: text,
   /** Longer text on the project page. Separate paragraphs with a blank line. */
@@ -95,6 +97,9 @@ export const experienceListSchema = z.array(experienceSchema)
 
 const logoSchema = z.object({ name: text.min(1), src: url })
 export type Logo = z.infer<typeof logoSchema>
+
+export const currentlyWorkingModes = ['none', 'project', 'custom'] as const
+export type CurrentlyWorkingMode = (typeof currentlyWorkingModes)[number]
 
 const sectionCopySchema = z.object({
   /** Label in the top navigation. Leave empty to hide it from the nav. */
@@ -144,11 +149,6 @@ export const settingsSchemas = {
         rotate: z.number().min(-45).max(45),
       }),
     ),
-    currentlyBuilding: z.object({
-      /** Slug of the project to show. Empty hides the card. */
-      slug: z.union([slug, z.literal('')]),
-      blurb: text,
-    }),
     techStack: z.object({
       title: text,
       text,
@@ -156,6 +156,22 @@ export const settingsSchemas = {
       outerRing: z.array(logoSchema),
     }),
   }),
+  /** What "Currently Working On" on the home page opens, and the card on the About page. */
+  currentlyWorking: z
+    .object({
+      /** "none" hides it, "project" shows one of the projects, "custom" shows the card below. */
+      mode: z.enum(currentlyWorkingModes),
+      /** The project to show in "project" mode. */
+      slug: z.union([slug, z.literal('')]),
+      /** The line under the page's title. */
+      blurb: text,
+      /** The card shown in "custom" mode: a project card that has no page of its own. */
+      custom: projectSchema.omit({ slug: true, section: true }).extend({ title: text }),
+    })
+    .refine((value) => value.mode !== 'custom' || value.custom.title !== '', {
+      message: 'Give the card a title',
+      path: ['custom', 'title'],
+    }),
   education: z.object({
     school: text,
     degree: text,

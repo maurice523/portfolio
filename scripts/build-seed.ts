@@ -19,6 +19,14 @@ for (const [key, schema] of Object.entries(collectionSchemas)) {
 const literal = (value: string | number) =>
   typeof value === 'number' ? String(value) : `'${value.replaceAll("'", "''")}'`
 
+// The projects table gained its section column in migration 0005, after this seed runs, so the
+// seed leaves it out (0005 fills it in for these projects).
+// (section is the column just before sort_order: drop it, one placeholder and its value)
+const withoutSection = ({ sql, params }: Statement): Statement => ({
+  sql: sql.replace('section, ', '').replace('?, ?)', '?)'),
+  params: params.filter((_, i) => i !== params.length - 2),
+})
+
 // Swap each ? placeholder for its value as a SQL literal.
 const toSql = ({ sql, params }: Statement) => {
   let i = 0
@@ -30,7 +38,7 @@ const statements = [
     settingStatement(key as keyof typeof seed.settings, value as never),
   ),
   // Skip the DELETE that collectionStatements starts with: the tables are new and empty.
-  ...collectionStatements('projects', seed.projects).slice(1),
+  ...collectionStatements('projects', seed.projects).slice(1).map(withoutSection),
   ...collectionStatements('experience', seed.experience).slice(1),
   ...collectionStatements('themes', seed.themes).slice(1),
 ]

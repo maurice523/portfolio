@@ -10,7 +10,6 @@ import {
   NumberInput,
   Panel,
   RemoveButton,
-  Select,
   StringList,
   TextArea,
   TextInput,
@@ -19,7 +18,7 @@ import { replaceAt } from '../list'
 import { SortableList } from '../SortableList'
 
 export function AboutPage() {
-  const { settings, projects } = useContent()
+  const { settings } = useContent()
   const editor = useEditor({
     id: 'about',
     saved: settings.about,
@@ -27,7 +26,7 @@ export function AboutPage() {
     save: (value) => saveSettings('about', value),
   })
   const { draft, setDraft } = editor
-  const { interests, techStack, currentlyBuilding } = draft
+  const { interests, techStack } = draft
   const setInterests = (next: typeof interests) => setDraft({ ...draft, interests: next })
   const setTechStack = (patch: Partial<typeof techStack>) =>
     setDraft({ ...draft, techStack: { ...techStack, ...patch } })
@@ -144,28 +143,6 @@ export function AboutPage() {
         >
           + Add chip
         </button>
-      </Panel>
-
-      <Panel title="Currently building">
-        <Select
-          label="Project"
-          value={currentlyBuilding.slug}
-          options={[
-            { value: '', label: 'None (hide this card)' },
-            ...projects.map((project) => ({ value: project.slug, label: project.title })),
-          ]}
-          onChange={(slug) =>
-            setDraft({ ...draft, currentlyBuilding: { ...currentlyBuilding, slug } })
-          }
-        />
-        <TextArea
-          label="Blurb"
-          rows={2}
-          value={currentlyBuilding.blurb}
-          onChange={(blurb) =>
-            setDraft({ ...draft, currentlyBuilding: { ...currentlyBuilding, blurb } })
-          }
-        />
       </Panel>
 
       <Panel title="Tech stack" description="The card with orbiting logos.">

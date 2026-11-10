@@ -16,6 +16,7 @@ import {
   type LinkProps,
   type Location,
 } from 'react-router'
+import { isBloomTrip } from '@/content/currentProject'
 import { PageExitContext, usePageExit } from './pageExit'
 
 // Page changes run in three steps. Links inside the site go through leave(), so:
@@ -25,9 +26,16 @@ import { PageExitContext, usePageExit } from './pageExit'
 //    and the page title ("page-title"), and a project's title and image between its row on the
 //    projects page and its own page ("project-title", "project-image"). Timing is in index.css.
 // 3. The new page settles into place.
+// The one exception is between the home page and the "Currently working on" page: there the
+// button's dot swells until it fills the screen, and the other page fades in from that color
+// (on the way back it shrinks away into where the dot is). Nothing else clears away; see
+// index.css.
 
 /** How long the current page takes to clear away before the morph, in ms. */
-function exitMs(from: string) {
+function exitMs(from: string, to: string) {
+  // Going to "Currently working on" waits for the dot to fill the screen; coming back starts
+  // right away
+  if (isBloomTrip(from, to)) return to === '/' ? 0 : 700
   // Home: the other menu words swing out and the bass sinks. Elsewhere: everything but what
   // travels fades out.
   return from === '/' ? 900 : 300
@@ -65,6 +73,12 @@ export function PageTransitions({ children }: { children: ReactNode }) {
       return
     }
 
+    // Tells index.css which animation to give the page change: the swelling dot, or none
+    // (the default, with the titles floating)
+    if (isBloomTrip(location.pathname, to)) {
+      document.documentElement.dataset.transition = to === '/' ? 'bloom-out' : 'bloom-in'
+    }
+
     const transition = document.startViewTransition(
       () =>
         new Promise<void>((resolve) => {
@@ -75,12 +89,15 @@ export function PageTransitions({ children }: { children: ReactNode }) {
           go(to)
         }),
     )
-    void transition.finished.finally(() => setLanding(false))
+    void transition.finished.finally(() => {
+      setLanding(false)
+      delete document.documentElement.dataset.transition
+    })
   })
 
   useEffect(() => {
     if (!leavingTo) return
-    const timer = setTimeout(() => finishExit(leavingTo), exitMs(location.pathname))
+    const timer = setTimeout(() => finishExit(leavingTo), exitMs(location.pathname, leavingTo))
     return () => clearTimeout(timer)
   }, [leavingTo, location.pathname])
 

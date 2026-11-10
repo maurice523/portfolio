@@ -7,26 +7,40 @@ import { ProjectPreview } from '@/components/ProjectPreview'
 import { StatusBadge } from '@/components/StatusBadge'
 import { ToolChip } from '@/components/ToolChip'
 import { useContent } from '@/content/context'
+import type { Project } from '@/shared/schema'
 import { NotFoundPage } from './NotFoundPage'
 
+// /projects/<slug>
 export function ProjectPage() {
   const { slug = '' } = useParams()
-  const { projects, settings } = useContent()
-  const { profile } = settings
-  const project = projects.find((item) => item.slug === slug)
+  const project = useContent().projects.find((item) => item.slug === slug)
+  return project ? <ProjectView project={project} /> : <NotFoundPage />
+}
+
+/**
+ * One project's page. The back arrow leads to the projects page unless `back` says otherwise
+ * (the "Currently working on" page shows its project this same way, with the arrow leading home).
+ */
+export function ProjectView({
+  project,
+  back,
+}: {
+  project: Project
+  back?: { to: string; label: string }
+}) {
+  const { profile } = useContent().settings
   const { leavingTo, arrivedFrom, landing } = usePageExit()
   // The image floats here from the project's row on the projects page, and back to it, along
-  // with the title (see PageFrame); the rest makes way
-  const imageTravels = leavingTo === '/projects' || (arrivedFrom === '/projects' && landing)
+  // with the title (see PageFrame); the rest makes way. (Not when the arrow leads elsewhere.)
+  const imageTravels =
+    !back && (leavingTo === '/projects' || (arrivedFrom === '/projects' && landing))
   const fade = useSurroundings()
   const stay = useSurroundings(imageTravels)
-
-  if (!project) return <NotFoundPage />
 
   const { title, tagline, description, highlights, tools, links, date, status } = project
 
   return (
-    <PageFrame title={title} intro={tagline} kind="project" fadeContent={false}>
+    <PageFrame title={title} intro={tagline} kind="project" back={back} fadeContent={false}>
       <title>{`${title} | ${profile.name}`}</title>
       <meta name="description" content={tagline} />
 

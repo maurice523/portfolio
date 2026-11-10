@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router'
 import { Layout } from '@/components/Layout'
+import { CurrentlyWorkingOnPage } from '@/pages/CurrentlyWorkingOnPage'
 import { HomePage } from '@/pages/HomePage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { ProjectPage } from '@/pages/ProjectPage'
@@ -19,6 +20,7 @@ function App() {
         <Route path="experience" element={<SectionPage id="experience" />} />
         <Route path="about" element={<SectionPage id="about" />} />
         <Route path="contact" element={<SectionPage id="contact" />} />
+        <Route path="currently-working-on" element={<CurrentlyWorkingOnPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
       <Route

@@ -47,6 +47,9 @@ export function ProjectsPage() {
     const blank: Project = {
       slug: `new-project-${projects.length + 1}`,
       title: 'New project',
+      // Starts under the same heading as the project being edited, which is usually the one
+      // you're adding to
+      section: project?.section ?? '',
       tagline: '',
       description: '',
       highlights: [],
@@ -64,7 +67,7 @@ export function ProjectsPage() {
   return (
     <EditorPage
       title="Projects"
-      description="Projects show on the site in this order. Drag to reorder."
+      description="Projects show on the site under their heading, in this order. Headings appear in the order their first project does, so drag to reorder."
       editor={editor}
     >
       <Panel
@@ -96,7 +99,9 @@ export function ProjectsPage() {
                 className="flex min-h-10 flex-1 items-center gap-2 text-left text-sm"
               >
                 <span className="font-medium">{item.title || 'Untitled'}</span>
-                <span className="text-xs text-muted">{statusLabels[item.status]}</span>
+                <span className="text-xs text-muted">
+                  {item.section || 'No heading'} · {statusLabels[item.status]}
+                </span>
               </button>
               <RemoveButton label={item.title} onClick={remove} />
             </div>
@@ -108,6 +113,7 @@ export function ProjectsPage() {
         <ProjectEditor
           key={index}
           project={project}
+          sections={[...new Set(projects.map((item) => item.section).filter(Boolean))]}
           onChange={(next) => setProjects(replaceAt(projects, index, next))}
         />
       )}
@@ -117,9 +123,12 @@ export function ProjectsPage() {
 
 function ProjectEditor({
   project,
+  sections,
   onChange,
 }: {
   project: Project
+  /** Headings already in use, offered when typing this project's heading. */
+  sections: string[]
   onChange: (project: Project) => void
 }) {
   const set = (patch: Partial<Project>) => onChange({ ...project, ...patch })
@@ -136,6 +145,13 @@ function ProjectEditor({
             onChange={(slug) => set({ slug: toSlug(slug) })}
           />
         </div>
+        <TextInput
+          label="Heading"
+          hint="The heading this project is listed under on the Projects page, e.g. Machine learning or Data analysis. Pick one already in use or type a new one; leave empty to list it without a heading."
+          suggestions={sections}
+          value={project.section}
+          onChange={(section) => set({ section })}
+        />
         <TextInput
           label="Tagline"
           hint="One line on the card."

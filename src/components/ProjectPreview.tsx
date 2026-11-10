@@ -44,13 +44,18 @@ export function ProjectPreview({
             </>
           )}
         </div>
-        <img
-          src={image}
-          alt={imageAlt}
-          loading="lazy"
-          decoding="async"
-          className="min-h-0 w-full flex-1 object-cover object-top-left"
-        />
+        {/* A card with no image yet (e.g. a new one in /admin) shows an empty window */}
+        {image ? (
+          <img
+            src={image}
+            alt={imageAlt}
+            loading="lazy"
+            decoding="async"
+            className="min-h-0 w-full flex-1 object-cover object-top-left"
+          />
+        ) : (
+          <div className="min-h-0 flex-1" />
+        )}
       </div>
     </div>
   )

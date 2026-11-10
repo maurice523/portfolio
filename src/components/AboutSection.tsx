@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { Fragment, useRef } from 'react'
 import { useContent } from '@/content/context'
+import { useCurrentWork } from '@/content/currentProject'
 import { OrbitingCircles } from './OrbitingCircles'
 
 // Only the two interactive pieces get a surface of their own; the rest is plain text
@@ -9,10 +10,10 @@ const column = 'border-t border-line pt-4'
 
 export function AboutSection() {
   const playground = useRef<HTMLDivElement>(null)
-  const { settings, projects } = useContent()
+  const { settings } = useContent()
   const { profile, about, education } = settings
   const { interests, techStack } = about
-  const building = projects.find((project) => project.slug === about.currentlyBuilding.slug)
+  const building = useCurrentWork()
 
   return (
     <div className="grid grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-6">
@@ -87,18 +88,19 @@ export function AboutSection() {
         </ul>
       </div>
 
-      {/* Currently building. Not a link: pages only lead back home (see PageFrame) */}
+      {/* Currently working on (set at /admin → Currently working). Not a link: pages only lead back
+          home (see PageFrame) */}
       {building && (
         <div className={`${column} flex flex-col gap-2 md:col-span-2`}>
           <p className="flex items-center gap-2 text-sm font-medium text-muted">
             <span className="size-2 animate-pulse rounded-full bg-amber motion-reduce:animate-none" />
-            Currently building
+            Currently working on
           </p>
           <div>
             <p className="font-display text-3xl font-extrabold tracking-tight [font-stretch:112%]">
-              {building.title}
+              {building.project.title}
             </p>
-            <p className="mt-1 text-sm text-muted">{about.currentlyBuilding.blurb}</p>
+            <p className="mt-1 text-sm text-muted">{building.blurb}</p>
           </div>
         </div>
       )}

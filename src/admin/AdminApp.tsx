@@ -5,6 +5,7 @@ import { useContent } from '@/content/context'
 import { useFavicon } from '@/content/useFavicon'
 import { DraftsContext, isDirty, type Drafts } from './drafts'
 import { AboutPage } from './pages/AboutPage'
+import { CurrentlyWorkingPage } from './pages/CurrentlyWorkingPage'
 import { EducationPage } from './pages/EducationPage'
 import { ExperiencePage } from './pages/ExperiencePage'
 import { HeroPage } from './pages/HeroPage'
@@ -21,6 +22,7 @@ const pages = [
   { path: 'projects', label: 'Projects', element: <ProjectsPage /> },
   { path: 'themes', label: 'Themes', element: <ThemesPage /> },
   { path: 'hero', label: 'Home & hero', element: <HeroPage /> },
+  { path: 'currently-working', label: 'Currently working', element: <CurrentlyWorkingPage /> },
   { path: 'about', label: 'About', element: <AboutPage /> },
   { path: 'experience', label: 'Experience', element: <ExperiencePage /> },
   { path: 'education', label: 'Education', element: <EducationPage /> },
@@ -41,6 +43,7 @@ export default function AdminApp() {
     themes: content.themes,
     experience: content.experience,
     ...content.settings,
+    'currently-working': content.settings.currentlyWorking,
   }
   const dirtyPages = pages.filter((page) => isDirty(drafts, page.path, savedFor[page.path]))
   const hasUnsaved = dirtyPages.length > 0
