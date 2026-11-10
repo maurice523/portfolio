@@ -31,7 +31,13 @@ export function HomePage() {
   // Back from a page: the bass and the text wait out of sight until its title has landed
   const waiting = entrance === 'return' && landing
   const hidden = leaving || waiting
+  const [bubbleSettled, setBubbleSettled] = useState(false)
   useOldSectionLinks()
+
+  useEffect(() => {
+    const timer = setTimeout(() => setBubbleSettled(true), 2600)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     introPlayed = true
@@ -43,18 +49,59 @@ export function HomePage() {
           rises again when you come back.
           On large screens it's as tall as the screen allows (less room for the buttons under
           it), so the column is 0.3 of that: the photo's width-to-height ratio. */}
-      <div className="w-[min(34vw,24dvh)] overflow-clip lg:row-span-2 lg:w-[calc((max(100dvh,38rem)-10rem)*0.3)]">
+      <div className="relative w-[min(34vw,24dvh)] lg:row-span-2 lg:w-[calc((max(100dvh,38rem)-10rem)*0.3)]">
+        <div className="size-full overflow-clip">
+          <motion.div
+            initial={entrance === 'none' ? false : { y: '102%' }}
+            animate={{ y: hidden ? '102%' : '0%' }}
+            transition={
+              leaving
+                ? { delay: 0.2, duration: 0.7, ease: [0.55, 0.055, 0.675, 0.19] }
+                : { delay: intro ? 0.2 : 0.1, duration: intro ? 1.4 : 1, ease }
+            }
+            className="h-full"
+          >
+            <BassGuitar className="h-full" />
+          </motion.div>
+        </div>
+
+        {/* Cartoon speech bubble by the neck: a hard offset shadow plus a soft one behind it
+            lift it off the background. It sits outside the clipping box so it can overhang. */}
         <motion.div
-          initial={entrance === 'none' ? false : { y: '102%' }}
-          animate={{ y: hidden ? '102%' : '0%' }}
-          transition={
-            leaving
-              ? { delay: 0.2, duration: 0.7, ease: [0.55, 0.055, 0.675, 0.19] }
-              : { delay: intro ? 0.2 : 0.1, duration: intro ? 1.4 : 1, ease }
-          }
-          className="h-full"
+          initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
+          animate={{ opacity: hidden ? 0 : 1, scale: hidden ? 0.6 : 1, rotate: -3 }}
+          transition={{
+            // The entrance delay only applies on the way in; after that the bubble settles back
+            // quickly (a stiffer spring, no delay) when the pointer leaves it
+            delay: hidden || bubbleSettled ? 0 : intro ? 1.6 : 0.5,
+            type: 'spring',
+            stiffness: 520,
+            damping: 20,
+          }}
+          whileHover={{
+            scale: 1.18,
+            rotate: 2,
+            x: 6,
+            y: -8,
+            transition: { type: 'spring', stiffness: 500, damping: 9 },
+          }}
+          whileTap={{ scale: 0.94, x: 0, y: 0 }}
+          style={{ transformOrigin: '0% 70%' }}
+          className="group absolute top-[7%] left-[78%] z-10 w-max cursor-default select-none"
         >
-          <BassGuitar className="h-full" />
+          <p className="relative rounded-[1.4rem] border-[3px] border-black bg-[#fff3cf] px-4 py-2.5 font-display text-sm leading-tight font-extrabold text-black [font-stretch:115%] shadow-[6px_6px_0_rgb(0_0_0/0.85),0_14px_26px_rgb(0_0_0/0.55)] transition-shadow duration-150 group-hover:shadow-[11px_11px_0_rgb(0_0_0/0.85),0_26px_38px_rgb(0_0_0/0.6)] sm:text-base">
+            Play me.
+            <br />I make sound!
+            {/* Tail pointing back at the neck: black outline triangle under a cream one */}
+            <span
+              aria-hidden
+              className="absolute top-1/2 -left-[17px] -mt-2 size-0 border-y-[9px] border-r-[17px] border-y-transparent border-r-black"
+            />
+            <span
+              aria-hidden
+              className="absolute top-1/2 -left-[11px] -mt-[5px] size-0 border-y-[6px] border-r-[12px] border-y-transparent border-r-[#fff3cf]"
+            />
+          </p>
         </motion.div>
       </div>
 
